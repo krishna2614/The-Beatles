@@ -1,0 +1,14 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block active %}
+    {% with active='about' %}{{ block.super }}{% endwith %}
+{% endblock %}
+
+{% block title %}
+    <title>The Beatles | About</title>
+{% endblock %}
+
+{% block content %}
+    <p>About</p>
+{% endblock content %}

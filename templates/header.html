@@ -1,0 +1,36 @@
+{% load static %}
+<header class="p-3 text-white" style="background-color:#669BBC; !important;">
+  <div class="container">
+    <div class="d-flex flex-wrap align-items-center justify-content-center justify-content-lg-start">
+      <a href="{% url 'index' %}" class="d-flex align-items-center mb-2 mb-lg-0 text-white text-decoration-none">
+        <img src="{% static 'images/theBeatles.png' %}" alt="ALT TEXT" height="55" width="60">
+      </a>
+      <ul class="nav col-12 col-lg-auto me-lg-auto mb-2 justify-content-center mb-md-0">
+        <li><a href="{% url 'index' %}" class="nav-link px-2 {% if active == 'home' %} text-primary {% else %} text-dark {% endif %}">Home</a></li>
+        <li><a href="{% url 'restrooms' %}" class="nav-link px-2 {% if active == 'restrooms' %} text-primary {% else %} text-dark {% endif %}">Restrooms</a></li>
+        <li><a href="{% url 'area_of_focus' %}" class="nav-link px-2 {% if active == 'aof' %} text-primary {% else %} text-dark {% endif %}">Area of Focus</a></li>
+        <li><a href="{% url 'about' %}" class="nav-link px-2 {% if active == 'about' %} text-primary {% else %} text-dark {% endif %}">About</a></li>
+        <li><a href="{% url 'contact' %}" class="nav-link px-2 {% if active == 'contact' %} text-primary {% else %} text-dark {% endif %}">Contact</a></li>
+      </ul>
+
+      <div class="text-end">
+        {%  if user.is_authenticated %}
+          <div class="dropdown text-end">
+            <a href="#" class="d-block link-dark text-decoration-none dropdown-toggle" id="dropdownUser1" data-bs-toggle="dropdown" aria-expanded="false">
+              <img src="{% static 'images/person.png' %}" alt="mdo" width="32" height="32" class="rounded-circle">
+            </a>
+            <ul class="dropdown-menu text-small" aria-labelledby="dropdownUser1">
+              <li><a class="dropdown-item" href="{% url 'password-reset' %}">Forgot Password</a></li>
+              <li><a class="dropdown-item" href="#">Profile</a></li>
+              <li><hr class="dropdown-divider"></li>
+              <li><a class="dropdown-item" href="{% url 'accounts_logout' %}">Sign out</a></li>
+            </ul>
+          </div>
+        {% else %}
+          <a href="{% url 'accounts_signin' %}"><button type="button" class="btn btn-outline-light me-2">Login</button></a>
+        <a href="{% url 'accounts_register' %}"><button type="button" class="btn btn-warning">Sign-up</button></a>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+</header>

@@ -1,0 +1,33 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}
+    <title>Restroom Finder | Signin</title>
+{% endblock %}
+
+{% block content %}
+    <main class="form-signin text-center">
+        <form method="POST" style="margin-right: 20%;margin-left: 20%;">
+            {% csrf_token %}
+            <img src="{% static 'images/theBeatles.png' %}" alt="" width="72" height="72">
+            <h1 class="h3 mb-3 fw-normal">Please sign in</h1>
+            {% for field in form %}
+                <div class="form-floating mb-3">
+                    {{ field }}
+                    {{ field.label_tag }}
+                    {% if field.errors %}
+                        {% for error in field.errors %}
+                            <div style="color:#dc3545;">
+                                {{ error }}
+                            </div>
+                        {% endfor %}
+                    {% endif %}
+                </div>
+            {% endfor %}
+            <button type="submit" class="w-100 btn btn-lg" style="background-color: #023047;color: white;">Submit</button>
+            <div>
+                <span>Or </span><a href="{% url 'password-reset' %}">Forgot Password?</a>
+            </div>
+        </form>
+    </main>
+{% endblock content %}

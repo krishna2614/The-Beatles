@@ -1,0 +1,185 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block active %}
+    {% with active='home' %}{{ block.super }}{% endwith %}
+{% endblock %}
+
+
+{% block title %}
+    <title>The Beatles | Home</title>
+{% endblock %}
+
+{% block content %}
+
+    <form class="form-inline mt-5" action="" method="POST">
+        {% csrf_token %}
+        <div class="input-group mb-3">
+            <input type="text" class="form-control" placeholder="Search...">
+            <button type="submit" class="btn" style="padding:0px;margin-left:5px;"><span class="input-group-text" id="basic-addon2"><i class="bi bi-search" style="color:#5DC95B;"></i></span></button>
+        </div>
+    </form>
+    <div style="">
+        <div id="map" style="width: 50%; height: 400px;margin-left: auto;margin-right: auto;">
+    </div>
+    </div>
+
+<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCxEhJzSEW4WQOINMyTdUblD0w5WRd-n4w&callback=initMap&v=weekly" defer></script>
+<script>
+    // Note: This example requires that you consent to location sharing when
+    // prompted by your browser. If you see the error "The Geolocation service
+    // failed.", it means you probably did not give permission for the browser to
+    // locate you.
+
+    let map, infoWindow;
+
+    var lat = '';
+    var lon = '';
+
+    function initMap() {
+        map = new google.maps.Map(document.getElementById("map"), {
+            center: { lat: -34.397, lng: 150.644 },
+            zoom: 6,
+        });
+
+        infoWindow = new google.maps.InfoWindow();
+
+        const locationButton = document.createElement("button");
+        locationButton.style.display = "none";
+        map.controls[google.maps.ControlPosition.TOP_CENTER].push(locationButton);
+
+        locationButton.addEventListener("click", () => {
+            // Try HTML5 geolocation.
+            if (navigator.geolocation) {
+                navigator.geolocation.getCurrentPosition(
+                    (position) => {
+                        const pos = {
+                            lat: position.coords.latitude,
+                            lng: position.coords.longitude,
+                        };
+                        lat = position.coords.latitude;
+                        lon = position.coords.longitude;
+                        // alert(lat);
+                        // alert(lon);
+                        infoWindow.setPosition(pos);
+                        infoWindow.setContent("Location found.");
+                        infoWindow.open(map);
+                        map.setCenter(pos);
+                    },
+                    () => {
+                        handleLocationError(true, infoWindow, map.getCenter());
+                    },
+                );
+            } else {
+                // Browser doesn't support Geolocation
+                handleLocationError(false, infoWindow, map.getCenter());
+            }
+        }, false);
+        locationButton.click();
+    }
+
+    async function readJson(url) {
+        var requestOptions = {
+            'content-type': 'application/json',
+            method: 'GET',
+            redirect: 'follow',
+            "Access-Control-Allow-Origin" : "*",
+            "Access-Control-Allow-Credentials" : true,
+            mode: "no-cors"
+        };
+
+        const response = await fetch(url, {mode: "no-cors"});
+        const json = await response.json();
+        return json;
+    }
+
+
+    function handleLocationError(browserHasGeolocation, infoWindow, pos) {
+        infoWindow.setPosition(pos);
+        infoWindow.setContent(
+            browserHasGeolocation
+                ? "Error: The Geolocation service failed."
+                : "Error: Your browser doesn't support geolocation.",
+            );
+        infoWindow.open(map);
+    }
+
+window.initMap = initMap;
+</script>
+{% endblock content %}
+
+<!--https://maps.googleapis.com/maps/api/place/findplacefromtext/json-->
+<!--  ?fields=formatted_address%2Cname%2Crating%2Copening_hours%2Cgeometry-->
+<!--  &input=restrooms-->
+<!--  &inputtype=textquery-->
+<!--  &locationbias=circle%3A2000%4033.25193%2C-97.1576474-->
+<!--  &key=AIzaSyCxEhJzSEW4WQOINMyTdUblD0w5WRd-n4w-->
+
+
+<!--https://maps.googleapis.com/maps/api/place/nearbysearch/json?keyword=restrooms&location=33.25193%2C-97.1576474&radius=2000&type=restrooms&key=AIzaSyCxEhJzSEW4WQOINMyTdUblD0w5WRd-n4w-->
+
+<!--https://maps.googleapis.com/maps/api/place/textsearch/json-->
+<!--  ?location=33.25193%2C-97.1576474-->
+<!--  &query=restrooms-->
+<!--  &radius=10000-->
+<!--  &key=AIzaSyCxEhJzSEW4WQOINMyTdUblD0w5WRd-n4w-->
+
+<!--&lt;!&ndash;33.25193,-97.1576474&ndash;&gt;-->
+<!--https://maps.googleapis.com/maps/api/place/textsearch/json-->
+<!--  ?location=42.3675294%2C-71.186966-->
+<!--  &query=123%20main%20street-->
+<!--  &radius=10000-->
+<!--  &key=YOUR_API_KEY-->
+
+
+<!--                        const myLatLng = { lat: 33.2008722, lng: -97.1589661};-->
+<!--                        new google.maps.Marker({-->
+<!--                            position: myLatLng,-->
+<!--                            map,-->
+<!--                            animation: google.maps.Animation.DROP,-->
+<!--                            title: "Hello World!",-->
+<!--                        });-->
+
+
+<!--var request = {-->
+<!--                            query: 'Restrooms',-->
+<!--                            fields: ['name', 'geometry'],-->
+<!--                            location-->
+<!--                        };-->
+
+<!--                        var service = new google.maps.places.PlacesService(map);-->
+
+<!--                        service.textSearch(request, function(results, status) {-->
+<!--                            if (status === google.maps.places.PlacesServiceStatus.OK) {-->
+<!--                                for (var i = 0; i < results.length; i++) {-->
+<!--                                createMarker(results[i]);-->
+<!--                            }-->
+<!--                                map.setCenter(results[0].geometry.location);-->
+<!--                            }-->
+<!--                        });-->
+
+https://maps.googleapis.com/maps/api/place/photo?maxwidth=400&photo_reference=AUacShh3_Dd8yvV2JZMtNjjbbSbFhSv-0VmUN-uasQ2Oj00XB63irPTks0-A_1rMNfdTunoOVZfVOExRRBNrupUf8TY4Kw5iQNQgf2rwcaM8hXNQg7KDyvMR5B-HzoCE1mwy2ba9yxvmtiJrdV-xBgO8c5iJL65BCd0slyI1&key=AIzaSyCxEhJzSEW4WQOINMyTdUblD0w5WRd-n4w
+
+
+origin = (33.25193, -97.1576474)
+dest = (33.2008722, -97.1589661)
+
+print(geodesic(origin, dest).meters)  # 23576.805481751613
+print(geodesic(origin, dest).kilometers)  # 23.576805481751613
+print(geodesic(origin, dest).miles)  # 14.64994773134371
+
+new_lat1 = radians(lat1)
+new_lon1 = radians(lon1)
+new_lat2 = radians(lat2)
+new_lon2 = radians(lon2)
+
+dlon = new_lon2 - new_lon1
+dlat = new_lat2 - new_lat1
+
+a = sin(dlat / 2)**2 + cos(new_lat1) * cos(new_lat2) * sin(dlon / 2)**2
+c = 2 * atan2(sqrt(a), sqrt(1 - a))
+
+distance = R * c
+
+print("Result: ", distance)
+print("Should be: ", 278.546, "km")

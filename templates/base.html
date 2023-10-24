@@ -1,0 +1,26 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    {% block title %}
+      <title>The Beatles</title>
+    {% endblock %}
+    {% include 'links.html' %}
+  </head>
+  <body style="display: flex;flex-direction: column;height: 100vh;">
+    {% block active %}
+      {% include 'header.html' %}
+    {% endblock %}
+    <div class="page" style="">
+      <div class="container" style="flex: 1 0 auto;">
+        {% block content %}
+        {% endblock %}
+      </div>
+
+    {% include 'footer.html' %}
+    </div>
+    {% include 'scripts.html' %}
+
+  </body>
+</html>

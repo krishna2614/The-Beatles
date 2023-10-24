@@ -1,0 +1,14 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block active %}
+    {% with active='contact' %}{{ block.super }}{% endwith %}
+{% endblock %}
+
+{% block title %}
+    <title>The Beatles | Contact</title>
+{% endblock %}
+
+{% block content %}
+    <p>Contact</p>
+{% endblock content %}

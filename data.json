@@ -1,0 +1,796 @@
+{
+   "html_attributions": [],
+   "next_page_token": "AcJnMuEJWn-ykv8OJo2EDvTh941CW8Rm3eEJsI9rRsZCe2OmlXbK9kq44VY4Z73NsBLdsK-XwTJZr1l2lApvvthwbsQPxJOh5fxR427HnCIQwzZlVkcNhJJfW8-D7b6u3UdnoMzBfZ7TvdscrWjQ9RqywIbalsG39Pq7Gn9rYHMWlOpBcBlVQJ3Gqoon2Cg3OdkzvurnRvm6D6pyMW9JD_cG1TyUOFZbgImG7O8q4wi6U1REoO2zS3fTOyWwAA4SX88Q8EdCmUtELs7-t0MjYlLGV7rmiHVXE-XF6-1gdk4yN32KsfHxr5cFa9s6lDhjFTvJRNmtBPURmbGGSyjOOKlpGGVqczQHWqIYiZe_FbZVSkdf8knaSrayMCONlPKahIxetoSSIL0OBezXAREnrfs0OSCqKYXmF0tlrP2fZ3LYxn6Sd8qe_vBLiIGKmsMChaq9Yw",
+   "results": [
+      {
+         "business_status": "OPERATIONAL",
+         "formatted_address": "Denton, TX 76203, United States",
+         "geometry": {
+            "location": {
+               "lat": 33.2008722,
+               "lng": -97.1589661
+            },
+            "viewport": {
+               "northeast": {
+                  "lat": 33.20222512989273,
+                  "lng": -97.15736007010729
+               },
+               "southwest": {
+                  "lat": 33.19952547010728,
+                  "lng": -97.16005972989272
+               }
+            }
+         },
+         "icon": "https://maps.gstatic.com/mapfiles/place_api/icons/v1/png_71/generic_business-71.png",
+         "icon_background_color": "#7B9EB0",
+         "icon_mask_base_uri": "https://maps.gstatic.com/mapfiles/place_api/icons/v2/generic_pinlet",
+         "name": "Eagle Point Restrooms",
+         "place_id": "ChIJ4SD1QjjKTYYRag3OxjzDH6M",
+         "plus_code": {
+            "compound_code": "6R2R+8C Denton, Texas",
+            "global_code": "86546R2R+8C"
+         },
+         "rating": 1,
+         "reference": "ChIJ4SD1QjjKTYYRag3OxjzDH6M",
+         "types": [
+            "point_of_interest",
+            "establishment"
+         ],
+         "user_ratings_total": 1
+      },
+      {
+         "business_status": "OPERATIONAL",
+         "formatted_address": "Lewisville, TX 75057, United States",
+         "geometry": {
+            "location": {
+               "lat": 33.0758311,
+               "lng": -96.99781899999999
+            },
+            "viewport": {
+               "northeast": {
+                  "lat": 33.07729387989272,
+                  "lng": -96.99654432010728
+               },
+               "southwest": {
+                  "lat": 33.07459422010728,
+                  "lng": -96.99924397989273
+               }
+            }
+         },
+         "icon": "https://maps.gstatic.com/mapfiles/place_api/icons/v1/png_71/generic_business-71.png",
+         "icon_background_color": "#7B9EB0",
+         "icon_mask_base_uri": "https://maps.gstatic.com/mapfiles/place_api/icons/v2/generic_pinlet",
+         "name": "Lake Park Restroom",
+         "place_id": "ChIJwVarXbcxTIYRkw_ZYsnvWpE",
+         "plus_code": {
+            "compound_code": "32G2+8V Lewisville, Texas",
+            "global_code": "865532G2+8V"
+         },
+         "rating": 0,
+         "reference": "ChIJwVarXbcxTIYRkw_ZYsnvWpE",
+         "types": [
+            "point_of_interest",
+            "establishment"
+         ],
+         "user_ratings_total": 0
+      },
+      {
+         "business_status": "OPERATIONAL",
+         "formatted_address": "5701 Spring Hollow Ln, The Colony, TX 75056, United States",
+         "geometry": {
+            "location": {
+               "lat": 33.0828709,
+               "lng": -96.9202782
+            },
+            "viewport": {
+               "northeast": {
+                  "lat": 33.08411642989272,
+                  "lng": -96.91889762010727
+               },
+               "southwest": {
+                  "lat": 33.08141677010727,
+                  "lng": -96.92159727989272
+               }
+            }
+         },
+         "icon": "https://maps.gstatic.com/mapfiles/place_api/icons/v1/png_71/generic_business-71.png",
+         "icon_background_color": "#7B9EB0",
+         "icon_mask_base_uri": "https://maps.gstatic.com/mapfiles/place_api/icons/v2/generic_pinlet",
+         "name": "Stewart Park Public Restrooms",
+         "photos": [
+            {
+               "height": 3024,
+               "html_attributions": [
+                  "\u003ca href=\"https://maps.google.com/maps/contrib/111928891974669723001\"\u003eRupak Basak\u003c/a\u003e"
+               ],
+               "photo_reference": "AcJnMuH1ELadsoC_I64zdJOgzjroibhCIdfVmtfxUqqqte8q9oog8d9ia2sp0JK3FAYqXOmjOHi35RN3Kh2Q6a9m4lc5TtkTbeIvUm5Y4vaRlYiO49hHPbkdiKMAKpgx-diKk-69mz2nNG3NEz_5MhKVUMI-dFehWXX3jZZdvLtQy7xowxJB",
+               "width": 4032
+            }
+         ],
+         "place_id": "ChIJu7re6pw7TIYRHBKpD1by_I0",
+         "plus_code": {
+            "compound_code": "33MH+4V The Colony, Texas",
+            "global_code": "865533MH+4V"
+         },
+         "rating": 2.3,
+         "reference": "ChIJu7re6pw7TIYRHBKpD1by_I0",
+         "types": [
+            "point_of_interest",
+            "establishment"
+         ],
+         "user_ratings_total": 3
+      },
+      {
+         "business_status": "OPERATIONAL",
+         "formatted_address": "310 E FM 720, Little Elm, TX 75068, United States",
+         "geometry": {
+            "location": {
+               "lat": 33.1632643,
+               "lng": -96.9326081
+            },
+            "viewport": {
+               "northeast": {
+                  "lat": 33.16468302989272,
+                  "lng": -96.93132122010726
+               },
+               "southwest": {
+                  "lat": 33.16198337010728,
+                  "lng": -96.93402087989271
+               }
+            }
+         },
+         "icon": "https://maps.gstatic.com/mapfiles/place_api/icons/v1/png_71/generic_business-71.png",
+         "icon_background_color": "#7B9EB0",
+         "icon_mask_base_uri": "https://maps.gstatic.com/mapfiles/place_api/icons/v2/generic_pinlet",
+         "name": "Beard Park Restroom",
+         "place_id": "ChIJaf5kbE43TIYRIqid8yVPjVY",
+         "plus_code": {
+            "compound_code": "5378+8X Little Elm, Texas",
+            "global_code": "86555378+8X"
+         },
+         "rating": 0,
+         "reference": "ChIJaf5kbE43TIYRIqid8yVPjVY",
+         "types": [
+            "point_of_interest",
+            "establishment"
+         ],
+         "user_ratings_total": 0
+      },
+      {
+         "business_status": "OPERATIONAL",
+         "formatted_address": "15869 N Fwy, Fort Worth, TX 76177, United States",
+         "geometry": {
+            "location": {
+               "lat": 33.0227228,
+               "lng": -97.28261889999999
+            },
+            "viewport": {
+               "northeast": {
+                  "lat": 33.02426742989272,
+                  "lng": -97.28112267010728
+               },
+               "southwest": {
+                  "lat": 33.02156777010727,
+                  "lng": -97.28382232989271
+               }
+            }
+         },
+         "icon": "https://maps.gstatic.com/mapfiles/place_api/icons/v1/png_71/generic_business-71.png",
+         "icon_background_color": "#7B9EB0",
+         "icon_mask_base_uri": "https://maps.gstatic.com/mapfiles/place_api/icons/v2/generic_pinlet",
+         "name": "Restrooms & Family Restrooms",
+         "opening_hours": {
+            "open_now": true
+         },
+         "photos": [
+            {
+               "height": 4032,
+               "html_attributions": [
+                  "\u003ca href=\"https://maps.google.com/maps/contrib/114327619877298735430\"\u003eA Google User\u003c/a\u003e"
+               ],
+               "photo_reference": "AcJnMuGySOq6r_E2eqGi-uFQMBS8P_Oedmz-unDlo3OmQxirAnNHktu15mdxy13PtmKjzDxSvSc5i1C07V_LL4zKvyyXm5X2pL0aU7_CLZPs8fwV7d5OCiPyPg5gUGg6rhdOLIljSdD3QJabxcW7XyF8j5ycWJWpte3P1Uodb4PQ3-SA0It_",
+               "width": 3024
+            }
+         ],
+         "place_id": "ChIJp12hBi_bTYYRK8c1VTr61AE",
+         "plus_code": {
+            "compound_code": "2PF8+3X Fort Worth, Texas",
+            "global_code": "86542PF8+3X"
+         },
+         "rating": 4.5,
+         "reference": "ChIJp12hBi_bTYYRK8c1VTr61AE",
+         "types": [
+            "point_of_interest",
+            "establishment"
+         ],
+         "user_ratings_total": 2
+      },
+      {
+         "business_status": "OPERATIONAL",
+         "formatted_address": "701 W Eldorado Pkwy, Little Elm, TX 75068, United States",
+         "geometry": {
+            "location": {
+               "lat": 33.1565121,
+               "lng": -96.9495172
+            },
+            "viewport": {
+               "northeast": {
+                  "lat": 33.15776562989272,
+                  "lng": -96.94825037010729
+               },
+               "southwest": {
+                  "lat": 33.15506597010727,
+                  "lng": -96.95095002989272
+               }
+            }
+         },
+         "icon": "https://maps.gstatic.com/mapfiles/place_api/icons/v1/png_71/generic_business-71.png",
+         "icon_background_color": "#7B9EB0",
+         "icon_mask_base_uri": "https://maps.gstatic.com/mapfiles/place_api/icons/v2/generic_pinlet",
+         "name": "Public Restroom",
+         "place_id": "ChIJ6dDsFjM3TIYR2dQmBqSNLig",
+         "plus_code": {
+            "compound_code": "5342+J5 Little Elm, Texas",
+            "global_code": "86555342+J5"
+         },
+         "rating": 0,
+         "reference": "ChIJ6dDsFjM3TIYR2dQmBqSNLig",
+         "types": [
+            "point_of_interest",
+            "establishment"
+         ],
+         "user_ratings_total": 0
+      },
+      {
+         "business_status": "OPERATIONAL",
+         "formatted_address": "Little Elm, TX 75068, United States",
+         "geometry": {
+            "location": {
+               "lat": 33.1586359,
+               "lng": -96.94765919999999
+            },
+            "viewport": {
+               "northeast": {
+                  "lat": 33.16000202989272,
+                  "lng": -96.94625317010728
+               },
+               "southwest": {
+                  "lat": 33.15730237010728,
+                  "lng": -96.94895282989272
+               }
+            }
+         },
+         "icon": "https://maps.gstatic.com/mapfiles/place_api/icons/v1/png_71/generic_business-71.png",
+         "icon_background_color": "#7B9EB0",
+         "icon_mask_base_uri": "https://maps.gstatic.com/mapfiles/place_api/icons/v2/generic_pinlet",
+         "name": "Public Restroom",
+         "place_id": "ChIJc0zXdzQ3TIYRC1lmsHp9VLo",
+         "plus_code": {
+            "compound_code": "5352+CW Little Elm, Texas",
+            "global_code": "86555352+CW"
+         },
+         "rating": 0,
+         "reference": "ChIJc0zXdzQ3TIYRC1lmsHp9VLo",
+         "types": [
+            "point_of_interest",
+            "establishment"
+         ],
+         "user_ratings_total": 0
+      },
+      {
+         "business_status": "OPERATIONAL",
+         "formatted_address": "Little Elm, TX 75068, United States",
+         "geometry": {
+            "location": {
+               "lat": 33.1568052,
+               "lng": -96.94654399999999
+            },
+            "viewport": {
+               "northeast": {
+                  "lat": 33.15819607989273,
+                  "lng": -96.94525487010728
+               },
+               "southwest": {
+                  "lat": 33.15549642010728,
+                  "lng": -96.94795452989273
+               }
+            }
+         },
+         "icon": "https://maps.gstatic.com/mapfiles/place_api/icons/v1/png_71/generic_business-71.png",
+         "icon_background_color": "#7B9EB0",
+         "icon_mask_base_uri": "https://maps.gstatic.com/mapfiles/place_api/icons/v2/generic_pinlet",
+         "name": "Public Restroom",
+         "place_id": "ChIJkYNg6zQ3TIYRip0se9tH2sw",
+         "plus_code": {
+            "compound_code": "5343+PC Little Elm, Texas",
+            "global_code": "86555343+PC"
+         },
+         "rating": 0,
+         "reference": "ChIJkYNg6zQ3TIYRip0se9tH2sw",
+         "types": [
+            "point_of_interest",
+            "establishment"
+         ],
+         "user_ratings_total": 0
+      },
+      {
+         "business_status": "OPERATIONAL",
+         "formatted_address": "Little Elm, TX 75068, United States",
+         "geometry": {
+            "location": {
+               "lat": 33.1588203,
+               "lng": -96.94444999999999
+            },
+            "viewport": {
+               "northeast": {
+                  "lat": 33.16027967989272,
+                  "lng": -96.94309507010728
+               },
+               "southwest": {
+                  "lat": 33.15758002010728,
+                  "lng": -96.94579472989271
+               }
+            }
+         },
+         "icon": "https://maps.gstatic.com/mapfiles/place_api/icons/v1/png_71/generic_business-71.png",
+         "icon_background_color": "#7B9EB0",
+         "icon_mask_base_uri": "https://maps.gstatic.com/mapfiles/place_api/icons/v2/generic_pinlet",
+         "name": "Public Restroom",
+         "place_id": "ChIJVz1OoTU3TIYR6ks0tYKVMV4",
+         "plus_code": {
+            "compound_code": "5354+G6 Little Elm, Texas",
+            "global_code": "86555354+G6"
+         },
+         "rating": 0,
+         "reference": "ChIJVz1OoTU3TIYR6ks0tYKVMV4",
+         "types": [
+            "point_of_interest",
+            "establishment"
+         ],
+         "user_ratings_total": 0
+      },
+      {
+         "business_status": "OPERATIONAL",
+         "formatted_address": "Flower Mound, TX 75022, United States",
+         "geometry": {
+            "location": {
+               "lat": 33.0006473,
+               "lng": -97.0939647
+            },
+            "viewport": {
+               "northeast": {
+                  "lat": 33.00198447989273,
+                  "lng": -97.09262637010727
+               },
+               "southwest": {
+                  "lat": 32.99928482010728,
+                  "lng": -97.09532602989272
+               }
+            }
+         },
+         "icon": "https://maps.gstatic.com/mapfiles/place_api/icons/v1/png_71/generic_business-71.png",
+         "icon_background_color": "#7B9EB0",
+         "icon_mask_base_uri": "https://maps.gstatic.com/mapfiles/place_api/icons/v2/generic_pinlet",
+         "name": "Restroom",
+         "photos": [
+            {
+               "height": 4160,
+               "html_attributions": [
+                  "\u003ca href=\"https://maps.google.com/maps/contrib/102523862441218886529\"\u003eAbel Moreira\u003c/a\u003e"
+               ],
+               "photo_reference": "AcJnMuFCdDtMstSxa4HnC5Dosih7X-dUJqRvZK1OhZ48Qa0EPi5HRwBQh2rvg5NXng6M5WizmrvW_PlamJ2Zsk1ONjBMIHZUZuBvkMAmdOQYpvxwliXdY_NiwS01dUdptQZibyTrDOWtcKITO7H7FS1UW8aTe84KnMUKzaPcCb6XdLgYv3k8",
+               "width": 3120
+            }
+         ],
+         "place_id": "ChIJZUYKozLTTYYRtUlkM2Kp3Rk",
+         "plus_code": {
+            "compound_code": "2W24+7C Flower Mound, Texas",
+            "global_code": "86542W24+7C"
+         },
+         "rating": 5,
+         "reference": "ChIJZUYKozLTTYYRtUlkM2Kp3Rk",
+         "types": [
+            "point_of_interest",
+            "establishment"
+         ],
+         "user_ratings_total": 6
+      },
+      {
+         "business_status": "OPERATIONAL",
+         "formatted_address": "Grapevine, TX 76051, United States",
+         "geometry": {
+            "location": {
+               "lat": 32.9652735,
+               "lng": -97.07982849999999
+            },
+            "viewport": {
+               "northeast": {
+                  "lat": 32.96628397989272,
+                  "lng": -97.07822802010728
+               },
+               "southwest": {
+                  "lat": 32.96358432010727,
+                  "lng": -97.08092767989271
+               }
+            }
+         },
+         "icon": "https://maps.gstatic.com/mapfiles/place_api/icons/v1/png_71/generic_business-71.png",
+         "icon_background_color": "#7B9EB0",
+         "icon_mask_base_uri": "https://maps.gstatic.com/mapfiles/place_api/icons/v2/generic_pinlet",
+         "name": "Restrooms",
+         "place_id": "ChIJQb-Tud4rTIYR5aU5iWI2YWc",
+         "plus_code": {
+            "compound_code": "XW8C+43 Grapevine, Texas",
+            "global_code": "8644XW8C+43"
+         },
+         "rating": 0,
+         "reference": "ChIJQb-Tud4rTIYR5aU5iWI2YWc",
+         "types": [
+            "point_of_interest",
+            "establishment"
+         ],
+         "user_ratings_total": 0
+      },
+      {
+         "business_status": "OPERATIONAL",
+         "formatted_address": "Grapevine, TX 76051, United States",
+         "geometry": {
+            "location": {
+               "lat": 32.9591024,
+               "lng": -97.06750819999999
+            },
+            "viewport": {
+               "northeast": {
+                  "lat": 32.96048047989272,
+                  "lng": -97.06620077010727
+               },
+               "southwest": {
+                  "lat": 32.95778082010727,
+                  "lng": -97.06890042989272
+               }
+            }
+         },
+         "icon": "https://maps.gstatic.com/mapfiles/place_api/icons/v1/png_71/generic_business-71.png",
+         "icon_background_color": "#7B9EB0",
+         "icon_mask_base_uri": "https://maps.gstatic.com/mapfiles/place_api/icons/v2/generic_pinlet",
+         "name": "Restrooms",
+         "place_id": "ChIJOY2QiUkrTIYRrDrmtlLWdeo",
+         "plus_code": {
+            "compound_code": "XW5M+J2 Grapevine, Texas",
+            "global_code": "8644XW5M+J2"
+         },
+         "rating": 0,
+         "reference": "ChIJOY2QiUkrTIYRrDrmtlLWdeo",
+         "types": [
+            "point_of_interest",
+            "establishment"
+         ],
+         "user_ratings_total": 0
+      },
+      {
+         "business_status": "OPERATIONAL",
+         "formatted_address": "100-248 E Hudgins St, Grapevine, TX 76051, United States",
+         "geometry": {
+            "location": {
+               "lat": 32.9342688,
+               "lng": -97.0771252
+            },
+            "viewport": {
+               "northeast": {
+                  "lat": 32.93564877989272,
+                  "lng": -97.07577472010728
+               },
+               "southwest": {
+                  "lat": 32.93294912010728,
+                  "lng": -97.07847437989271
+               }
+            }
+         },
+         "icon": "https://maps.gstatic.com/mapfiles/place_api/icons/v1/png_71/generic_business-71.png",
+         "icon_background_color": "#7B9EB0",
+         "icon_mask_base_uri": "https://maps.gstatic.com/mapfiles/place_api/icons/v2/generic_pinlet",
+         "name": "Public Restrooms",
+         "photos": [
+            {
+               "height": 2988,
+               "html_attributions": [
+                  "\u003ca href=\"https://maps.google.com/maps/contrib/106391131602092594738\"\u003eTom Sutton\u003c/a\u003e"
+               ],
+               "photo_reference": "AcJnMuHhE3YJw_dm53JJnaBuF-3BxlG9wRxuC5uTDHCrc4WAAGpcWP63t0QXPRDGTJNHmCWUkyaBK6q5I7fesvyyrdozB9X8L0UdHZYXeTDgi0LcijJCeh0H6SHe0sHXS6cZliMY59fV98y9X9gbcSeN7inOFCMHq4_EFLqmuh2nLeMt-hGl",
+               "width": 5312
+            }
+         ],
+         "place_id": "ChIJJf1EryQrTIYROy93_V6722Y",
+         "plus_code": {
+            "compound_code": "WWMF+M4 Grapevine, Texas",
+            "global_code": "8644WWMF+M4"
+         },
+         "rating": 5,
+         "reference": "ChIJJf1EryQrTIYROy93_V6722Y",
+         "types": [
+            "point_of_interest",
+            "establishment"
+         ],
+         "user_ratings_total": 3
+      },
+      {
+         "business_status": "OPERATIONAL",
+         "formatted_address": "201 S Main St, Grapevine, TX 76051, United States",
+         "geometry": {
+            "location": {
+               "lat": 32.9390149,
+               "lng": -97.0782598
+            },
+            "viewport": {
+               "northeast": {
+                  "lat": 32.94039217989273,
+                  "lng": -97.07689942010728
+               },
+               "southwest": {
+                  "lat": 32.93769252010728,
+                  "lng": -97.07959907989272
+               }
+            }
+         },
+         "icon": "https://maps.gstatic.com/mapfiles/place_api/icons/v1/png_71/generic_business-71.png",
+         "icon_background_color": "#7B9EB0",
+         "icon_mask_base_uri": "https://maps.gstatic.com/mapfiles/place_api/icons/v2/generic_pinlet",
+         "name": "Public Restroom",
+         "opening_hours": {
+            "open_now": true
+         },
+         "photos": [
+            {
+               "height": 1580,
+               "html_attributions": [
+                  "\u003ca href=\"https://maps.google.com/maps/contrib/113372671085550305786\"\u003eTiffanie Cutrer\u003c/a\u003e"
+               ],
+               "photo_reference": "AcJnMuFTK0FGPc57T3j3280_y_1uGd6TDVn_6P9Od-CyuHGop4pR67ElcqNfdVVSa7kV9gQ-O2-1yQAHW6Pim0q3KRPu1Nm5QYFcv47IvAnqfjuSrXaS6GLjx5ckkLkygwG2XxfxYXFcLCf2UrQ45BzsupcPz70mhXuKOnV0ERq5v6fXT22-",
+               "width": 2108
+            }
+         ],
+         "place_id": "ChIJLc8hgkQrTIYROTFu6s50HWU",
+         "plus_code": {
+            "compound_code": "WWQC+JQ Grapevine, Texas",
+            "global_code": "8644WWQC+JQ"
+         },
+         "rating": 3.3,
+         "reference": "ChIJLc8hgkQrTIYROTFu6s50HWU",
+         "types": [
+            "point_of_interest",
+            "establishment"
+         ],
+         "user_ratings_total": 3
+      },
+      {
+         "business_status": "OPERATIONAL",
+         "formatted_address": "Grapevine, TX 76092, United States",
+         "geometry": {
+            "location": {
+               "lat": 32.9827168,
+               "lng": -97.1121737
+            },
+            "viewport": {
+               "northeast": {
+                  "lat": 32.98401922989272,
+                  "lng": -97.11101797010728
+               },
+               "southwest": {
+                  "lat": 32.98131957010728,
+                  "lng": -97.11371762989273
+               }
+            }
+         },
+         "icon": "https://maps.gstatic.com/mapfiles/place_api/icons/v1/png_71/generic_business-71.png",
+         "icon_background_color": "#7B9EB0",
+         "icon_mask_base_uri": "https://maps.gstatic.com/mapfiles/place_api/icons/v2/generic_pinlet",
+         "name": "Restroom",
+         "place_id": "ChIJl5-wHv_TTYYRhwQjtQqx2d8",
+         "plus_code": {
+            "compound_code": "XVMQ+34 Grapevine, Texas",
+            "global_code": "8644XVMQ+34"
+         },
+         "rating": 0,
+         "reference": "ChIJl5-wHv_TTYYRhwQjtQqx2d8",
+         "types": [
+            "point_of_interest",
+            "establishment"
+         ],
+         "user_ratings_total": 0
+      },
+      {
+         "business_status": "OPERATIONAL",
+         "formatted_address": "150 Bluffview Cir, Pilot Point, TX 76258, United States",
+         "geometry": {
+            "location": {
+               "lat": 33.377882,
+               "lng": -97.01179279999999
+            },
+            "viewport": {
+               "northeast": {
+                  "lat": 33.37916587989272,
+                  "lng": -97.01045772010727
+               },
+               "southwest": {
+                  "lat": 33.37646622010727,
+                  "lng": -97.01315737989272
+               }
+            }
+         },
+         "icon": "https://maps.gstatic.com/mapfiles/place_api/icons/v1/png_71/generic_business-71.png",
+         "icon_background_color": "#7B9EB0",
+         "icon_mask_base_uri": "https://maps.gstatic.com/mapfiles/place_api/icons/v2/generic_pinlet",
+         "name": "Restroom and Showers",
+         "place_id": "ChIJJaRZY-1NTIYRDCFvfQw1OOo",
+         "plus_code": {
+            "compound_code": "9XHQ+58 Pilot Point, Texas",
+            "global_code": "86549XHQ+58"
+         },
+         "rating": 0,
+         "reference": "ChIJJaRZY-1NTIYRDCFvfQw1OOo",
+         "types": [
+            "point_of_interest",
+            "establishment"
+         ],
+         "user_ratings_total": 0
+      },
+      {
+         "business_status": "OPERATIONAL",
+         "formatted_address": "900 Lobo Ln, Little Elm, TX 75068, United States",
+         "geometry": {
+            "location": {
+               "lat": 33.1421458,
+               "lng": -96.9416176
+            },
+            "viewport": {
+               "northeast": {
+                  "lat": 33.14388052989273,
+                  "lng": -96.94091725000001
+               },
+               "southwest": {
+                  "lat": 33.14118087010728,
+                  "lng": -96.94371865000001
+               }
+            }
+         },
+         "icon": "https://maps.gstatic.com/mapfiles/place_api/icons/v1/png_71/generic_business-71.png",
+         "icon_background_color": "#7B9EB0",
+         "icon_mask_base_uri": "https://maps.gstatic.com/mapfiles/place_api/icons/v2/generic_pinlet",
+         "name": "Public Bathrooms",
+         "place_id": "ChIJiSoGs0kxTIYRTVEQI_Vsxes",
+         "plus_code": {
+            "compound_code": "43R5+V9 Little Elm, Texas",
+            "global_code": "865543R5+V9"
+         },
+         "rating": 4,
+         "reference": "ChIJiSoGs0kxTIYRTVEQI_Vsxes",
+         "types": [
+            "point_of_interest",
+            "establishment"
+         ],
+         "user_ratings_total": 1
+      },
+      {
+         "business_status": "OPERATIONAL",
+         "formatted_address": "Parking Lot, Valley View, TX 76272, United States",
+         "geometry": {
+            "location": {
+               "lat": 33.4082242,
+               "lng": -97.0453313
+            },
+            "viewport": {
+               "northeast": {
+                  "lat": 33.40955402989272,
+                  "lng": -97.04409852010728
+               },
+               "southwest": {
+                  "lat": 33.40685437010728,
+                  "lng": -97.04679817989272
+               }
+            }
+         },
+         "icon": "https://maps.gstatic.com/mapfiles/place_api/icons/v1/png_71/generic_business-71.png",
+         "icon_background_color": "#7B9EB0",
+         "icon_mask_base_uri": "https://maps.gstatic.com/mapfiles/place_api/icons/v2/generic_pinlet",
+         "name": "Restroom",
+         "photos": [
+            {
+               "height": 3000,
+               "html_attributions": [
+                  "\u003ca href=\"https://maps.google.com/maps/contrib/101577803292408558654\"\u003eKatherine McCutchan\u003c/a\u003e"
+               ],
+               "photo_reference": "AcJnMuG_mpMpLuIX0I5HFrHybkjmoV9HSPVpNKYH5CxYPzp8KUn9CNPkzYFwA8uf6SvzFBckb-iTlWYh-RKmWmjWXGMHHb-y_mN_HWxChOMXyeSKaRM9n5fFxFmA2PmE0SUIcKGVoHQmiQdAYtAVzDqvqWC8oycZkiJ3Si0hMBl7Eje6yWvg",
+               "width": 4000
+            }
+         ],
+         "place_id": "ChIJ-Zy-bRhNTIYRY8UK_XV42f4",
+         "plus_code": {
+            "compound_code": "CX53+7V Valley View, Texas",
+            "global_code": "8654CX53+7V"
+         },
+         "rating": 5,
+         "reference": "ChIJ-Zy-bRhNTIYRY8UK_XV42f4",
+         "types": [
+            "point_of_interest",
+            "establishment"
+         ],
+         "user_ratings_total": 2
+      },
+      {
+         "business_status": "OPERATIONAL",
+         "formatted_address": "600 Spinks Rd, Flower Mound, TX 75028, United States",
+         "geometry": {
+            "location": {
+               "lat": 33.001075,
+               "lng": -97.0407335
+            },
+            "viewport": {
+               "northeast": {
+                  "lat": 33.00222217989272,
+                  "lng": -97.03922897010729
+               },
+               "southwest": {
+                  "lat": 32.99952252010727,
+                  "lng": -97.04192862989274
+               }
+            }
+         },
+         "icon": "https://maps.gstatic.com/mapfiles/place_api/icons/v1/png_71/generic_business-71.png",
+         "icon_background_color": "#7B9EB0",
+         "icon_mask_base_uri": "https://maps.gstatic.com/mapfiles/place_api/icons/v2/generic_pinlet",
+         "name": "Bathroom",
+         "place_id": "ChIJewBQvrgtTIYRWlCxI67bz5w",
+         "plus_code": {
+            "compound_code": "2X25+CP Flower Mound, Texas",
+            "global_code": "86542X25+CP"
+         },
+         "rating": 0,
+         "reference": "ChIJewBQvrgtTIYRWlCxI67bz5w",
+         "types": [
+            "point_of_interest",
+            "establishment"
+         ],
+         "user_ratings_total": 0
+      },
+      {
+         "business_status": "OPERATIONAL",
+         "formatted_address": "Deer Ridge Cir, Pilot Point, TX 76258, United States",
+         "geometry": {
+            "location": {
+               "lat": 33.3751667,
+               "lng": -97.0223099
+            },
+            "viewport": {
+               "northeast": {
+                  "lat": 33.37647912989272,
+                  "lng": -97.02077662010727
+               },
+               "southwest": {
+                  "lat": 33.37377947010728,
+                  "lng": -97.02347627989272
+               }
+            }
+         },
+         "icon": "https://maps.gstatic.com/mapfiles/place_api/icons/v1/png_71/generic_business-71.png",
+         "icon_background_color": "#7B9EB0",
+         "icon_mask_base_uri": "https://maps.gstatic.com/mapfiles/place_api/icons/v2/generic_pinlet",
+         "name": "Restroom and Showers",
+         "opening_hours": {
+            "open_now": true
+         },
+         "place_id": "ChIJi_bmaIhNTIYRgVZm3ZQVXbE",
+         "plus_code": {
+            "compound_code": "9XGH+33 Pilot Point, Texas",
+            "global_code": "86549XGH+33"
+         },
+         "rating": 5,
+         "reference": "ChIJi_bmaIhNTIYRgVZm3ZQVXbE",
+         "types": [
+            "point_of_interest",
+            "establishment"
+         ],
+         "user_ratings_total": 1
+      }
+   ],
+   "status": "OK"
+}

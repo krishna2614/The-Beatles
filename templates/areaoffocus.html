@@ -1,0 +1,14 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block active %}
+    {% with active='aof' %}{{ block.super }}{% endwith %}
+{% endblock %}
+
+{% block title %}
+    <title>The Beatles | Area of Focus</title>
+{% endblock %}
+
+{% block content %}
+    <p>Area of Focus</p>
+{% endblock content %}
