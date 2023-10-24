@@ -26,7 +26,7 @@ SECRET_KEY = 'django-insecure-a9+hzsfv4jd+tvbd&taj9)m(z*1s014@q8po30rtrj=!oca^&m
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
 
-ALLOWED_HOSTS = ['floating-caverns-08751-9995cb4244d3.herokuapp.com', '127.0.0.1']
+ALLOWED_HOSTS = ['floating-caverns-08751-9995cb4244d3.herokuapp.com', '127.0.0.1', 'localhost']
 
 
 # Application definition
@@ -132,15 +132,13 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/4.2/howto/static-files/
 
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
-
 STATIC_URL = '/static/'
 
-if DEBUG:
-    MEDIA_URL = '/media/'
-    STATIC_ROOT = BASE_DIR / 'static/css/'
-    STATICFILES_DIRS = (
-        BASE_DIR / 'static',
-    )
+MEDIA_URL = '/media/'
+STATIC_ROOT = BASE_DIR / 'static/css/'
+STATICFILES_DIRS = (
+    BASE_DIR / 'static',
+)
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
