@@ -1,4 +1,5 @@
 from django.contrib.auth import authenticate, login, logout
+from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, redirect
 from . import forms
 from .models import User
@@ -42,19 +43,26 @@ def register(request):
 
 
 def forgot(request):
-    if request.user.is_authenticated:
+    if not request.user.is_authenticated:
         return redirect('index')
     else:
         form = forms.ForgotPasswordForm()
         if request.method == 'POST':
             form = forms.ForgotPasswordForm(request.POST)
             if form.is_valid():
-                u = User.objects.get(userId=request.user.userId)
-                u.set_password('new password')
-                u.save()
-                # auto-login user
-                login(request, u)
-                return redirect('accounts_signin')
+                user = authenticate(request, userId=request.user.userId, password=form.cleaned_data['old_password'])
+                if user:
+                    u = User.objects.get(userId=request.user.userId)
+                    u.set_password(form.cleaned_data['new_password'])
+                    u.save()
+                    # auto-login user
+                    login(request, u)
+                    return redirect('index')
+                else:
+                    print('PASSWORD INCORRECT')
+                    return render(request, 'forgot_password.html', context={'form': form})
+            print('FORM NOT VALID')
+            return render(request, 'forgot_password.html', context={'form': form})
         return render(request, 'forgot_password.html', context={'form': form})
 
 

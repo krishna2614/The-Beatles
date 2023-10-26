@@ -49,11 +49,11 @@ def index(request):
         # elif request.GET['sort'] == 'dsc':
         #     restrooms = sorted(restrooms, key=lambda d: d['name'], reverse=True)
 
-    # per_page = 3
-    # paginator = Paginator(restrooms, per_page)
-    # page_number = request.GET.get("page")
-    # page_obj = paginator.get_page(page_number)
-    # if not page_number:
-    #     page_number = 1
-    # restrooms = paginator.page(page_number)
-    return render(request, 'restrooms.html', {'restrooms': restrooms})# 'page_obj': page_obj})
+    per_page = 3
+    paginator = Paginator(restrooms, per_page)
+    page_number = request.GET.get("page")
+    page_obj = paginator.get_page(page_number)
+    if not page_number:
+        page_number = 1
+    restrooms = paginator.page(page_number)
+    return render(request, 'restrooms.html', {'restrooms': restrooms, 'page_obj': page_obj})

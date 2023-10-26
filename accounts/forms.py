@@ -26,11 +26,11 @@ class SignupForm(UserCreationForm):
 
 
 class ForgotPasswordForm(forms.Form):
-    old_password = forms.CharField(max_length=50)
+    old_password = forms.CharField(max_length=50, widget=forms.PasswordInput)
     new_password = forms.CharField(max_length=50, widget=forms.PasswordInput)
     confirm_password = forms.CharField(max_length=50, widget=forms.PasswordInput)
 
     def __init__(self, *args, **kwargs):
-        super(ForgotPassword, self).__init__(*args, **kwargs)
+        super(ForgotPasswordForm, self).__init__(*args, **kwargs)
         for visible in self.visible_fields():
             visible.field.widget.attrs['class'] = 'form-control'

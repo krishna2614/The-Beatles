@@ -15,11 +15,8 @@
             Filter <i class="bi bi-filter"></i>
         </button>
         <ul class="dropdown-menu">
-<!--            <li><a class="dropdown-item" href="?sort=</a></li>-->
-            <li><a class="dropdown-item" href="?sort=asc&sortby=distance">Distance ASC</a></li>
-            <li><a class="dropdown-item" href="?sort=asc&sortby=rating">Rating ASC</a></li>
-            <li><a class="dropdown-item" href="?sort=dsc&sortby=distance">Distance DSC</a></li>
-            <li><a class="dropdown-item" href="?sort=dsc&sortby=rating">Rating DSC</a></li>
+            <li><a class="dropdown-item" href="?sort=asc&sortby=distance">By Distance</a></li>
+            <li><a class="dropdown-item" href="?sort=asc&sortby=rating">By Rating</a></li>
         </ul>
     </div>
     <div>
@@ -47,25 +44,36 @@
             </div>
         {% endfor %}
     </div>
-<!--    <nav aria-label="Page navigation example">-->
-<!--        <ul class="pagination justify-content-center">-->
-<!--            {% if page_obj.has_previous %}-->
-<!--            <li class="page-item">-->
+    <nav aria-label="Page navigation example">
+        <ul class="pagination justify-content-center">
+            {% if page_obj.has_previous %}
+            <li class="page-item">
 <!--                <a class="page-link" href="?page=1">First</a>-->
-<!--            </li>-->
-<!--            <li class="page-item">-->
-<!--                <a class="page-link" href="?page={{ page_obj.previous_page_number }}" tabindex="-1">Previous</a>-->
-<!--            </li>-->
-<!--            {% endif %}-->
-<!--            <li class="page-item"><a class="page-link" href="#">{{ page_obj.number }}</a></li>-->
-<!--            {% if page_obj.has_next %}-->
-<!--            <li class="page-item">-->
-<!--                <a class="page-link" href="?page={{ page_obj.next_page_number }}">Next</a>-->
-<!--            </li>-->
-<!--            <li class="page-item">-->
-<!--                <a class="page-link" href="?page={{ page_obj.paginator.num_pages }}">Last</a>-->
-<!--            </li>-->
-<!--            {% endif %}-->
-<!--        </ul>-->
-<!--    </nav>-->
+                <a class="page-link" onclick="do_sub(1);">First</a>
+            </li>
+            <li class="page-item">
+                <a class="page-link" onclick="do_sub({{ page_obj.previous_page_number }});" tabindex="-1">Previous</a>
+            </li>
+            {% endif %}
+            <li class="page-item"><a class="page-link" onclick="do_sub({{ page_obj.number }});">{{ page_obj.number }}</a></li>
+            {% if page_obj.has_next %}
+            <li class="page-item">
+                <a class="page-link" onclick="do_sub({{ page_obj.next_page_number }});">Next</a>
+            </li>
+            <li class="page-item">
+                <a class="page-link" onclick="do_sub({{ page_obj.paginator.num_pages }});">Last</a>
+            </li>
+            {% endif %}
+        </ul>
+    </nav>
+    <script>
+        function do_sub(pageNumber) {
+            const currentUrl2 = window.location.href;
+            const currentUrl = new URL(currentUrl2);
+            const queryString = window.location.search;
+            urlParams.set('page', pageNumber);
+            const link = new URL(`${currentUrl.origin}${currentUrl.pathname}?${urlParams}`);
+            window.location = link;
+        }
+    </script>
 {% endblock content %}
