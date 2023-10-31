@@ -3,17 +3,12 @@ from geopy.distance import geodesic
 from django.core.paginator import Paginator
 import json
 
-# Create your views here.
-
-
 def index(request):
-    # //https://maps.googleapis.com/maps/api/place/textsearch/json?location=33.25193%2C-97.1576474&query=restrooms&radius=5&key=AIzaSyCxEhJzSEW4WQOINMyTdUblD0w5WRd-n4w
-
-
     with open('data.json', 'r') as f:
         data = json.load(f)
         restrooms = []
         addressSet = set()
+
         for loc in data['results']:
             if loc["formatted_address"] not in list(addressSet):
                 origin = (33.25193, -97.1576474)
@@ -44,10 +39,6 @@ def index(request):
                 restrooms = sorted(restrooms, key=lambda d: d['distance'])
             else:
                 restrooms = sorted(restrooms, key=lambda d: d['distance'], reverse=True)
-        # elif request.GET['sort'] == 'asc':
-        #     restrooms = sorted(restrooms, key=lambda d: d['name'])
-        # elif request.GET['sort'] == 'dsc':
-        #     restrooms = sorted(restrooms, key=lambda d: d['name'], reverse=True)
 
     per_page = 3
     paginator = Paginator(restrooms, per_page)
