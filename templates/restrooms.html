@@ -69,9 +69,9 @@
         function do_sub(pageNumber) {
             const currentUrl2 = window.location.href;
             const currentUrl = new URL(currentUrl2);
-            const queryString = window.location.search;
-            urlParams.set('page', pageNumber);
-            const link = new URL(`${currentUrl.origin}${currentUrl.pathname}?${urlParams}`);
+            const queryString = new URLSearchParams(window.location.search);
+            queryString.set('page', pageNumber);
+            const link = new URL(`${currentUrl.origin}${currentUrl.pathname}?${queryString}`);
             window.location = link;
         }
     </script>
