@@ -24,7 +24,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-a9+hzsfv4jd+tvbd&taj9)m(z*1s014@q8po30rtrj=!oca^&m'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 
 ALLOWED_HOSTS = ['floating-caverns-08751-9995cb4244d3.herokuapp.com', '127.0.0.1', 'localhost']
 
@@ -146,7 +146,7 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 AUTH_USER_MODEL = 'accounts.User'
 
-DEFAULT_FROM_EMAIL = 'The Beatles <dv586330@gmail.com>'
+DEFAULT_FROM_EMAIL = 'The Beatles <kshah1067530@gmail.com>'
 
 EMAIL_BACKEND = "django_ses.SESBackend"
 # EMAIL_FILE_PATH = BASE_DIR / 'sent_emails'
