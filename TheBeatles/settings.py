@@ -26,7 +26,7 @@ SECRET_KEY = 'django-insecure-a9+hzsfv4jd+tvbd&taj9)m(z*1s014@q8po30rtrj=!oca^&m
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['floating-caverns-08751-9995cb4244d3.herokuapp.com', '127.0.0.1', 'localhost']
+ALLOWED_HOSTS = ['floating-caverns-08751-9995cb4244d3.herokuapp.com', 'agile-chamber-93508-3b4b97083fcc.herokuapp.com', '127.0.0.1', 'localhost']
 
 
 # Application definition
