@@ -58,18 +58,15 @@
                             lat: position.coords.latitude,
                             lng: position.coords.longitude,
                         };
+
                         lat = position.coords.latitude;
                         lon = position.coords.longitude;
 
-                        document.cookie = "latitude" + "=" + (lat || "");
-                        document.cookie = "longitude" + "=" + (lon || "");
+                        localStorage.setItem('currentLocation', JSON.stringify(pos));
 
                         map.setCenter(pos);
-                        map.setZoom(15);
+                        map.setZoom(12);
 
-                        infoWindow.setPosition(pos);
-                        infoWindow.setContent("Location found.");
-                        infoWindow.open(map);
                         map.setCenter(pos);
 
                         findNearbyPlaces(pos);
@@ -102,8 +99,8 @@
         let service = new google.maps.places.PlacesService(map);
         service.nearbySearch({
             location: location,
-            radius: 500, // Search in a 500 meter radius
-            type: ['restrooms'], // Change to whatever place type you're interested in
+            radius: 20000, // Search in a 500 meter radius
+            type: ['restrooms'],
         }, processNearbySearchResults);
     }
 
@@ -111,18 +108,32 @@
     function processNearbySearchResults(results, status) {
         if (status === google.maps.places.PlacesServiceStatus.OK) {
             clearNearbyPlaces(); // Clear previous places
-            for (let i = 0; i < results.length; i++) {
-                createMarker(results[i]);
-                // Save the place details in an array
-                nearbyPlaces.push({
-                    name: results[i].name,
-                    location: results[i].geometry.location.toString(),
-                    vicinity: results[i].vicinity
+            let detailsCounter = 0; // A counter to track the number of details fetched
+            results.forEach(place => {
+                // Use the place details service to get more information
+                const service = new google.maps.places.PlacesService(map);
+                service.getDetails({
+                    placeId: place.place_id
+                }, (placeResult, placeStatus) => {
+                    if (placeStatus === google.maps.places.PlacesServiceStatus.OK) {
+                        // Save the detailed information
+                        nearbyPlaces.push({
+                            address: placeResult.formatted_address,
+                            lat: placeResult.geometry.location.lat(),
+                            lng: placeResult.geometry.location.lng(),
+                            name: placeResult.name,
+                            rating: placeResult.rating ? placeResult.rating : null,
+                            placeId: placeResult.place_id ? placeResult.place_id : null
+                        });
+
+                        // When all details have been fetched, save the data
+                        if (++detailsCounter === results.length) {
+                            saveNearbyPlaces(nearbyPlaces);
+                        }
+                    }
                 });
-            }
-            // Now you can handle the nearbyPlaces array as needed
-            // For example, send it to a server or save it locally
-            saveNearbyPlaces(nearbyPlaces);
+                createMarker(place); // Continue to create a marker for each place
+            });
         }
     }
 
@@ -142,26 +153,6 @@
         // When the marker is clicked, calculate and display the route
         calculateAndDisplayRoute(place.geometry.location);
       });
-    }
-
-    // Function to save nearby places information
-    function saveNearbyPlaces(places) {
-        // Convert places array to a JSON string
-        let placesJson = JSON.stringify(places, null, 2);
-        // Show the JSON in the console for demonstration purposes
-        // console.log(placesJson);
-
-        // Here you could send the JSON to a server using an AJAX request
-        // Or prompt the user to download the file using the following code:
-        let blob = new Blob([placesJson], {type: "application/json"});
-        let url = URL.createObjectURL(blob);
-        let a = document.createElement('a');
-        a.download = "nearby_places.json";
-        a.href = url;
-        a.textContent = "Download nearby_places.json";
-        document.body.appendChild(a);
-        // a.click(); // You might not want to actually click this automatically
-        // Instead, consider adding the link somewhere on the page for the user to click
     }
 
     // Implement the calculateAndDisplayRoute function
@@ -189,6 +180,55 @@
         });
     }
 
+    function saveNearbyPlaces(places) {
+        let placesJson = JSON.stringify(places, null, 2);
+
+        // Save the JSON to localStorage
+        localStorage.setItem('nearbyRestrooms', placesJson);
+
+        let nearbyRestrooms = localStorage.getItem('nearbyRestrooms');
+        let currentLocation = localStorage.getItem('currentLocation');
+
+        currentLocation = currentLocation ? JSON.parse(currentLocation) : null;
+        nearbyRestrooms = nearbyRestrooms ? JSON.parse(nearbyRestrooms) : null;
+
+        let data = {
+            currentLocation: currentLocation,
+            nearbyRestrooms: nearbyRestrooms
+        }
+        // Only proceed if nearbyRestrooms is not null
+        if (data) {
+            fetch('/restrooms/savedata/', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRFToken': getCookie('csrftoken') // Function to get CSRF token from cookies
+                },
+                body: JSON.stringify(data) // Data from local storage
+            })
+            .catch((error) => {
+                console.error('Error:', error);
+            });
+        }
+    }
+
+    function getCookie(name) {
+        let cookieValue = null;
+        if (document.cookie && document.cookie !== '') {
+            const cookies = document.cookie.split(';');
+            for (let i = 0; i < cookies.length; i++) {
+                const cookie = cookies[i].trim();
+                if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                    cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                    break;
+                }
+            }
+        }
+        return cookieValue;
+    }
+
 window.initMap = initMap;
+
+
 </script>
 {% endblock content %}

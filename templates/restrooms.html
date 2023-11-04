@@ -10,69 +10,73 @@
 {% endblock %}
 
 {% block content %}
-    <div class="dropdown" style="text-align:end;">
-        <button class="btn btn-secondary mt-5 mb-5" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-            Filter <i class="bi bi-filter"></i>
-        </button>
-        <ul class="dropdown-menu">
-            <li><a class="dropdown-item" href="?sort=asc&sortby=distance">By Distance</a></li>
-            <li><a class="dropdown-item" href="?sort=asc&sortby=rating">By Rating</a></li>
-        </ul>
-    </div>
-    <div>
-        {% for restroom in restrooms %}
-            <div class="card m-2">
-                <div class="row g-0">
-                    <div class="col-md-4">
-                        <img src="{{ restroom.image_url|default_if_none:'/static/images/restroomIcon.jpg' }}" class="img-fluid rounded-start" style="width: 100%;height: 200px;background-size: cover;background-position: center;background-repeat: no-repeat;"/>
-                    </div>
-                    <div class="col-md-8">
-                        <div class="card-body">
-                            <h5 class="card-title">{{ restroom.name }}</h5>
-                            <p class="card-text">
-                                <a href="https://maps.google.com/?q={{ restroom.lat }},{{ restroom.lng }}" style="text-decoration:none;">{{ restroom.address }}</a>
-                            </p>
-                            <p class="card-text">
-                                <small class="text-muted">Distance: {{ restroom.distance|floatformat:2 }} miles</small>
-                            </p>
-                            <p class="card-text">
-                                <small class="text-muted">Rating: {{ restroom.rating }}</small>
-                            </p>
+    {% if restroom %}
+        <div class="dropdown" style="text-align:end;">
+            <button class="btn btn-secondary mt-5 mb-5" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                Filter <i class="bi bi-filter"></i>
+            </button>
+            <ul class="dropdown-menu">
+                <li><a class="dropdown-item" href="?sort=asc&sortby=distance">By Distance</a></li>
+                <li><a class="dropdown-item" href="?sort=asc&sortby=rating">By Rating</a></li>
+            </ul>
+        </div>
+        <div>
+            {% for restroom in restrooms %}
+                <div class="card m-2">
+                    <div class="row g-0">
+                        <div class="col-md-4">
+                            <img src="{{ restroom.image_url|default_if_none:'/static/images/restroomIcon.jpg' }}" class="img-fluid rounded-start" style="width: 100%;height: 200px;background-size: cover;background-position: center;background-repeat: no-repeat;"/>
+                        </div>
+                        <div class="col-md-8">
+                            <div class="card-body">
+                                <h5 class="card-title">{{ restroom.name }}</h5>
+                                <p class="card-text">
+                                    <a href="https://maps.google.com/?q={{ restroom.lat }},{{ restroom.lng }}" style="text-decoration:none;">{{ restroom.address }}</a>
+                                </p>
+                                <p class="card-text">
+                                    <small class="text-muted">Distance: {{ restroom.distance|floatformat:2 }} miles</small>
+                                </p>
+                                <p class="card-text">
+                                    <small class="text-muted">Rating: {{ restroom.rating }}</small>
+                                </p>
+                            </div>
                         </div>
                     </div>
                 </div>
-            </div>
-        {% endfor %}
-    </div>
-    <nav aria-label="Page navigation example">
-        <ul class="pagination justify-content-center">
-            {% if page_obj.has_previous %}
-            <li class="page-item">
-                <a class="page-link" onclick="do_sub(1);">First</a>
-            </li>
-            <li class="page-item">
-                <a class="page-link" onclick="do_sub({{ page_obj.previous_page_number }});" tabindex="-1">Previous</a>
-            </li>
-            {% endif %}
-            <li class="page-item"><a class="page-link" onclick="do_sub({{ page_obj.number }});">{{ page_obj.number }}</a></li>
-            {% if page_obj.has_next %}
-            <li class="page-item">
-                <a class="page-link" onclick="do_sub({{ page_obj.next_page_number }});">Next</a>
-            </li>
-            <li class="page-item">
-                <a class="page-link" onclick="do_sub({{ page_obj.paginator.num_pages }});">Last</a>
-            </li>
-            {% endif %}
-        </ul>
-    </nav>
-    <script>
-        function do_sub(pageNumber) {
-            const currentUrl2 = window.location.href;
-            const currentUrl = new URL(currentUrl2);
-            const queryString = new URLSearchParams(window.location.search);
-            queryString.set('page', pageNumber);
-            const link = new URL(`${currentUrl.origin}${currentUrl.pathname}?${queryString}`);
-            window.location = link;
-        }
-    </script>
+            {% endfor %}
+        </div>
+        <nav aria-label="Page navigation example">
+            <ul class="pagination justify-content-center">
+                {% if page_obj.has_previous %}
+                <li class="page-item">
+                    <a class="page-link" onclick="do_sub(1);">First</a>
+                </li>
+                <li class="page-item">
+                    <a class="page-link" onclick="do_sub({{ page_obj.previous_page_number }});" tabindex="-1">Previous</a>
+                </li>
+                {% endif %}
+                <li class="page-item"><a class="page-link" onclick="do_sub({{ page_obj.number }});">{{ page_obj.number }}</a></li>
+                {% if page_obj.has_next %}
+                <li class="page-item">
+                    <a class="page-link" onclick="do_sub({{ page_obj.next_page_number }});">Next</a>
+                </li>
+                <li class="page-item">
+                    <a class="page-link" onclick="do_sub({{ page_obj.paginator.num_pages }});">Last</a>
+                </li>
+                {% endif %}
+            </ul>
+        </nav>
+        <script>
+            function do_sub(pageNumber) {
+                const currentUrl2 = window.location.href;
+                const currentUrl = new URL(currentUrl2);
+                const queryString = new URLSearchParams(window.location.search);
+                queryString.set('page', pageNumber);
+                const link = new URL(`${currentUrl.origin}${currentUrl.pathname}?${queryString}`);
+                window.location = link;
+            }
+        </script>
+    {% else %}
+        <center><p style="font-size:30px;margin-top:50px;">Location not Found</p></center>
+    {% endif %}
 {% endblock content %}
