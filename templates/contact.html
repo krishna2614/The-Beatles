@@ -10,5 +10,38 @@
 {% endblock %}
 
 {% block content %}
-    <p>Contact</p>
+    <main>
+    <section class="py-5">
+      <div class="container">
+        <div class="row">
+          <div class="col-md-8 mx-auto">
+            <h1 class="mb-4">Contact Us</h1>
+            <p class="mb-4">If you have any questions, feedback, or would like to get involved, please reach out to us. We are here to help!</p>
+
+            <form id="contactForm" action="MAILTO:ks105@gmail.com" method="post" enctype="text/plain">
+              <div class="mb-3">
+                <label for="name" class="form-label">Name</label>
+                <input type="text" class="form-control" id="name" name="name" required>
+              </div>
+              <div class="mb-3">
+                <label for="email" class="form-label">Email address</label>
+                <input type="email" class="form-control" id="email" name="email" required>
+              </div>
+              <div class="mb-3">
+                <label for="message" class="form-label">Message</label>
+                <textarea class="form-control" id="message" name="message" rows="3" required></textarea>
+              </div>
+              <button type="submit" class="btn btn-primary">Send Message</button>
+            </form>
+
+            <div class="mt-5">
+              <h3>Direct Contact</h3>
+              <p>Email: info@restroomfinder.com</p>
+              <p>Phone: +1 234 567 8900</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
 {% endblock content %}
