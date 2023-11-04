@@ -21,7 +21,8 @@ def index(request):
         # return JsonResponse({'status': 'success', 'data': data})
         for place in data['nearbyRestrooms']:
             origin = (data['currentLocation']['lat'], data['currentLocation']['lng'])
-            image_url = f'https://maps.googleapis.com/maps/api/place/photo?maxwidth=400&photo_reference={place["placeId"]}&key=AIzaSyCxEhJzSEW4WQOINMyTdUblD0w5WRd-n4w' if place['placeId'] else None
+            # image_url = f'https://maps.googleapis.com/maps/api/place/photo?maxwidth=400&photo_reference={place["photoId"]}&key=AIzaSyCxEhJzSEW4WQOINMyTdUblD0w5WRd-n4w' if place['photoid'] else None
+            image_url = place['photoId'] if place['photoId'] else None
             name = place['name']
             address = place['address']
             rating = place['rating'] if place['rating'] else -1
@@ -30,7 +31,7 @@ def index(request):
             dest = (lat, lng)
             distance = geodesic(origin, dest).miles
 
-            restrooms.append({'name': name, 'address': address, 'rating': rating, 'lat': lat, 'lng': lng, 'distance': distance})
+            restrooms.append({'name': name, 'address': address, 'rating': rating, 'lat': lat, 'lng': lng, 'image_url': image_url, 'distance': distance})
 
         if 'sortby' in request.GET:  # or 'sort' in request.GET:
             if request.GET.get('sortby') == 'rating':

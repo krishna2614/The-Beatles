@@ -123,7 +123,7 @@
                             lng: placeResult.geometry.location.lng(),
                             name: placeResult.name,
                             rating: placeResult.rating ? placeResult.rating : null,
-                            placeId: placeResult.place_id ? placeResult.place_id : null
+                            photoId: place.photos ? place.photos[0].getUrl() : null
                         });
 
                         // When all details have been fetched, save the data
