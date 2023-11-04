@@ -12,16 +12,13 @@ def save_data(request):
 
 
 def index(request):
-    # del request.session['restrooms']
     if 'restrooms' in request.session:
         restrooms = []
+        addressSet = set()
         data = request.session['restrooms']
 
-        print(data['nearbyRestrooms'][0])
-        # return JsonResponse({'status': 'success', 'data': data})
         for place in data['nearbyRestrooms']:
             origin = (data['currentLocation']['lat'], data['currentLocation']['lng'])
-            # image_url = f'https://maps.googleapis.com/maps/api/place/photo?maxwidth=400&photo_reference={place["photoId"]}&key=AIzaSyCxEhJzSEW4WQOINMyTdUblD0w5WRd-n4w' if place['photoid'] else None
             image_url = place['photoId'] if place['photoId'] else None
             name = place['name']
             address = place['address']
@@ -30,10 +27,12 @@ def index(request):
             lng = place['lng']
             dest = (lat, lng)
             distance = geodesic(origin, dest).miles
-
+            if address in addressSet:
+                continue
             restrooms.append({'name': name, 'address': address, 'rating': rating, 'lat': lat, 'lng': lng, 'image_url': image_url, 'distance': distance})
+            addressSet.add(address)
 
-        if 'sortby' in request.GET:  # or 'sort' in request.GET:
+        if 'sortby' in request.GET:
             if request.GET.get('sortby') == 'rating':
                 sort = request.GET.get('sort')
                 if sort == 'asc':

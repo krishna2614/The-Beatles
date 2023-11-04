@@ -98,6 +98,7 @@
     function findNearbyPlaces(location) {
         let service = new google.maps.places.PlacesService(map);
         service.nearbySearch({
+            keyword: 'restrooms',
             location: location,
             radius: 20000, // Search in a 500 meter radius
             type: ['restrooms'],
