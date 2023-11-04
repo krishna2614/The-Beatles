@@ -9,9 +9,14 @@ def index(request):
         restrooms = []
         addressSet = set()
 
+        if request.COOKIES.get('latitude', None) and request.COOKIES.get('longitude', None):
+            origin = (request.COOKIES.get('latitude'), request.COOKIES.get('longitude'))
+        else:
+            # Default UNT Dallas Location
+            origin = ('30.28575', '-97.72920')
+        print(origin)
         for loc in data['results']:
             if loc["formatted_address"] not in list(addressSet):
-                origin = (33.25193, -97.1576474)
                 dest = (loc['geometry']['location']['lat'], loc['geometry']['location']['lng'])
 
                 if 'photos' not in loc:
@@ -47,4 +52,7 @@ def index(request):
     if not page_number:
         page_number = 1
     restrooms = paginator.page(page_number)
+    # response = render(request, 'restrooms.html', {'restrooms': restrooms, 'page_obj': page_obj})
+    # response.set_cookie(keu='', value=)
+    # response.set_cookie(keu='', value=)
     return render(request, 'restrooms.html', {'restrooms': restrooms, 'page_obj': page_obj})
