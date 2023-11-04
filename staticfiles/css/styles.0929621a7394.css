@@ -1,0 +1,39 @@
+body {
+    background-color: #F0F0F0 !important; /* Light Gray */
+    color: #000000; /* Black */
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+.header-custom {
+    background-color: #99CC99 !important; /* Light Green */
+}
+
+.footer-custom {
+    background-color: #6699AA !important; /* Muted Blue */
+}
+
+h1, h2, h3, h4, h5, h6 {
+  color: #334477 !important; /* Dark Blue */
+  font-family: 'Roboto', sans-serif;
+}
+
+button {
+    background-color: #0077B6 !important; /* Vibrant Blue */
+    color: #FFFFFF !important; /* White */
+}
+
+a:link {
+  color: #0077B6; /* Vibrant Blue */
+}
+
+a:visited {
+  color: #1155A3; /* Slightly different shade of blue */
+}
+
+a:hover, a:focus {
+  color: #005599; /* Slightly darker shade on hover/focus */
+}
+
+a:active {
+  color: #005599; /* Same as hover/focus or slightly darker */
+}

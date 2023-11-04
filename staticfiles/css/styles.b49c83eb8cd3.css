@@ -1,0 +1,81 @@
+body {
+    background-color: #F5F5F5 !important; /* Light grey background */
+    color: #212121 !important; /* Almost black for text */
+    font-family: 'Arial', sans-serif; /* Commonly used font */
+}
+
+.header-custom, .footer-custom{
+    background-color: #E0E0E0 !important; /* Slightly darker grey for header/footer */
+    color: #212121 !important;
+    padding: 10px 0 !important;
+}
+
+footer a {
+  color: #212121 !important;
+  text-decoration: underline !important;
+}
+
+input[type="text"], input[type="email"], input[type="password"] {
+  padding: 10px !important;
+  margin: 5px 0 !important;
+  border: 1px solid #ccc !important;
+  border-radius: 5px !important;
+}
+
+button.primary, input[type="submit"] {
+  background-color: #00796B !important; /* Teal background for primary buttons */
+  color: #FFFFFF !important; /* White text for buttons */
+  padding: 10px 15px !important;
+  border: none !important;
+  border-radius: 5px !important;
+  cursor: pointer !important;
+  font-size: 16px !important;
+}
+
+
+/* Hyperlink <a> styles */
+a, a:visited {
+  color: #003366 !important; /* Deep blue color for links */
+  text-decoration: none !important; /* Removes underline from links */
+}
+
+/* Hyperlink <a> hover styles */
+a:hover, a:active {
+  color: #FFA500 !important; /* Orange color for hovering over links */
+  text-decoration: underline !important; /* Adds underline on hover for better accessibility */
+}
+
+/* Navigation menu styles */
+nav a {
+  display: inline-block !important;
+  margin-right: 15px !important;
+  color: #212121 !important;
+  text-transform: uppercase !important; /* Example of additional styling */
+}
+
+/* Active navigation menu styles */
+nav a.active {
+  color: #00796B !important;
+  border-bottom: 2px solid #00796B !important; /* Adds a bottom border to the active navigation item */
+}
+/* Footer link styles */
+
+
+/* Search bar styles */
+input[type="search"] {
+  padding: 10px !important;
+  border: 1px solid #ccc !important;
+  border-radius: 5px !important;
+}
+
+/* Form styles for consistency */
+
+
+/* Adjustments to map interface elements if necessary */
+.map-container {
+  /* Your styles for map container */
+}
+
+.map-overlay {
+  /* Your styles for map overlays like markers or info windows */
+}

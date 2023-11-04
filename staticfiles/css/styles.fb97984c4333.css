@@ -1,0 +1,63 @@
+/* Custom styles with Bootstrap */
+
+/* Body and Typography */
+body {
+  background-color: #F5F5F5 !important; /* Replace with your desired color */
+  color: #212121 !important; /* Replace with your desired color */
+}
+
+/* Navigation bar links */
+.nav-link {
+  color: #003366 !important; /* Your link color */
+}
+
+/* Login and Sign-up button */
+.btn-login {
+  background-color: transparent !important;
+  color: #00796B !important; /* Your desired login button text color */
+}
+
+.btn-signup {
+  background-color: #FFA500 !important; /* Your desired sign-up button color */
+  color: #ffffff !important;
+  border-radius: 5px !important;
+}
+
+/* Search bar - Bootstrap has form-control classes */
+.form-control {
+  background-color: #ffffff !important;
+  border: 1px solid #ccc !important;
+  border-radius: 5px !important;
+}
+
+/* Submit button for search can be styled with Bootstrap’s btn classes */
+.btn-search {
+  background-color: #4CAF50 !important; /* Your desired button color */
+  color: #ffffff !important;
+}
+
+/* Footer styles */
+footer {
+  background-color: #E0E0E0 !important;
+  color: #212121 !important;
+}
+
+/* Error message style */
+.alert-danger {
+  background-color: #FFCCCB !important; /* Light red for error messages */
+  color: #333 !important;
+  border-radius: 5px !important;
+  position: absolute !important; /* Adjust as necessary */
+  top: 20px !important; /* Adjust the positioning */
+  right: 20px !important;
+  z-index: 1000 !important; /* To be above other items */
+}
+
+/* Responsive layout adjustments with Bootstrap classes in HTML */
+
+/* For custom CSS responsive adjustments, use media queries */
+@media (max-width: 768px) {
+  .footer-links {
+    flex-direction: column !important;
+  }
+}

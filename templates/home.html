@@ -23,8 +23,7 @@
         <div id="map" style="width: 50%; height: 400px;margin-left: auto;margin-right: auto;">
     </div>
     </div>
-
-<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCxEhJzSEW4WQOINMyTdUblD0w5WRd-n4w&callback=initMap&v=weekly" defer></script>
+<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCxEhJzSEW4WQOINMyTdUblD0w5WRd-n4w&libraries=places&callback=initMap" async defer></script>
 <script>
     // Note: This example requires that you consent to location sharing when
     // prompted by your browser. If you see the error "The Geolocation service
@@ -43,13 +42,15 @@
         });
 
         infoWindow = new google.maps.InfoWindow();
+        directionsService = new google.maps.DirectionsService();
+        directionsRenderer = new google.maps.DirectionsRenderer();
+        directionsRenderer.setMap(map);
 
         const locationButton = document.createElement("button");
         locationButton.style.display = "none";
         map.controls[google.maps.ControlPosition.TOP_CENTER].push(locationButton);
 
         locationButton.addEventListener("click", () => {
-            // Try HTML5 geolocation.
             if (navigator.geolocation) {
                 navigator.geolocation.getCurrentPosition(
                     (position) => {
@@ -59,12 +60,19 @@
                         };
                         lat = position.coords.latitude;
                         lon = position.coords.longitude;
-                        // alert(lat);
-                        // alert(lon);
+
+                        document.cookie = "latitude" + "=" + (lat || "");
+                        document.cookie = "longitude" + "=" + (lon || "");
+
+                        map.setCenter(pos);
+                        map.setZoom(15);
+
                         infoWindow.setPosition(pos);
                         infoWindow.setContent("Location found.");
                         infoWindow.open(map);
                         map.setCenter(pos);
+
+                        findNearbyPlaces(pos);
                     },
                     () => {
                         handleLocationError(true, infoWindow, map.getCenter());
@@ -76,23 +84,8 @@
             }
         }, false);
         locationButton.click();
+        directionsRenderer.setMap(map);
     }
-
-    async function readJson(url) {
-        var requestOptions = {
-            'content-type': 'application/json',
-            method: 'GET',
-            redirect: 'follow',
-            "Access-Control-Allow-Origin" : "*",
-            "Access-Control-Allow-Credentials" : true,
-            mode: "no-cors"
-        };
-
-        const response = await fetch(url, {mode: "no-cors"});
-        const json = await response.json();
-        return json;
-    }
-
 
     function handleLocationError(browserHasGeolocation, infoWindow, pos) {
         infoWindow.setPosition(pos);
@@ -102,6 +95,98 @@
                 : "Error: Your browser doesn't support geolocation.",
             );
         infoWindow.open(map);
+    }
+
+    // Function to find nearby places
+    function findNearbyPlaces(location) {
+        let service = new google.maps.places.PlacesService(map);
+        service.nearbySearch({
+            location: location,
+            radius: 500, // Search in a 500 meter radius
+            type: ['restrooms'], // Change to whatever place type you're interested in
+        }, processNearbySearchResults);
+    }
+
+    // Process the results from the Nearby Search
+    function processNearbySearchResults(results, status) {
+        if (status === google.maps.places.PlacesServiceStatus.OK) {
+            clearNearbyPlaces(); // Clear previous places
+            for (let i = 0; i < results.length; i++) {
+                createMarker(results[i]);
+                // Save the place details in an array
+                nearbyPlaces.push({
+                    name: results[i].name,
+                    location: results[i].geometry.location.toString(),
+                    vicinity: results[i].vicinity
+                });
+            }
+            // Now you can handle the nearbyPlaces array as needed
+            // For example, send it to a server or save it locally
+            saveNearbyPlaces(nearbyPlaces);
+        }
+    }
+
+    // Clear any previous places stored
+    function clearNearbyPlaces() {
+        nearbyPlaces = [];
+    }
+
+    // Function to create a marker for a place
+    function createMarker(place) {
+      var marker = new google.maps.Marker({
+        map: map,
+        position: place.geometry.location
+      });
+
+      google.maps.event.addListener(marker, 'click', function() {
+        // When the marker is clicked, calculate and display the route
+        calculateAndDisplayRoute(place.geometry.location);
+      });
+    }
+
+    // Function to save nearby places information
+    function saveNearbyPlaces(places) {
+        // Convert places array to a JSON string
+        let placesJson = JSON.stringify(places, null, 2);
+        // Show the JSON in the console for demonstration purposes
+        // console.log(placesJson);
+
+        // Here you could send the JSON to a server using an AJAX request
+        // Or prompt the user to download the file using the following code:
+        let blob = new Blob([placesJson], {type: "application/json"});
+        let url = URL.createObjectURL(blob);
+        let a = document.createElement('a');
+        a.download = "nearby_places.json";
+        a.href = url;
+        a.textContent = "Download nearby_places.json";
+        document.body.appendChild(a);
+        // a.click(); // You might not want to actually click this automatically
+        // Instead, consider adding the link somewhere on the page for the user to click
+    }
+
+    // Implement the calculateAndDisplayRoute function
+    function calculateAndDisplayRoute(destination) {
+        // Initialize directions service
+        if (!directionsService) {
+            directionsService = new google.maps.DirectionsService();
+        }
+
+        // Define a request for the directions service
+        const request = {
+            origin: new google.maps.LatLng(lat, lon), // Use the user's current position
+            destination: destination, // Destination is the clicked marker's position
+            travelMode: google.maps.TravelMode.DRIVING // You can change this to BICYCLING, TRANSIT, WALKING, etc.
+        };
+
+        // Pass the request to the directions service
+        directionsService.route(request, function(response, status) {
+            if (status == 'OK') {
+                // Display the route on the map.
+                directionsRenderer.setDirections(response);
+            } else {
+                window.alert('Directions request failed due to ' + status);
+            }
+        });
     }
 
 window.initMap = initMap;
