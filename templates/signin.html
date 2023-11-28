@@ -25,8 +25,11 @@
                 </div>
             {% endfor %}
             <button type="submit" class="w-100 btn btn-lg" style="background-color: #023047;color: white;">Submit</button>
+            <br><br>
             <div>
-                <span>Or </span><a href="{% url 'password-reset' %}">Forgot Password?</a>
+                <span><a href="{% url 'accounts_register' %}">Create an account</a></span>
+                <br>
+                <span><a href="{% url 'password-reset' %}">Forgot Password</a></span>
             </div>
         </form>
     </main>

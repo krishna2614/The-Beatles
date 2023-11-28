@@ -1,0 +1,9 @@
+.custom-background {
+  background-color: #007bff; /* Bootstrap primary blue */
+  color: white;
+  padding: 10px 20px;
+  border-radius: 20px; /* Rounded corners */
+  text-decoration: none; /* Removes underline from links */
+  display: inline-block;
+  transition: background-color 0.3s ease; /* Smooth transition for hover effect */
+}

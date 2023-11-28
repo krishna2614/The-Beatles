@@ -1,23 +1,23 @@
 {% load static %}
-<header class="p-3 text-white header-custom" style="background-color:#669BBC; !important;">
+<header class="p-3 text-white header-custom navbar-light bg-light">
   <div class="container">
     <div class="d-flex flex-wrap align-items-center justify-content-center justify-content-lg-start">
       <a href="{% url 'index' %}" class="d-flex align-items-center mb-2 mb-lg-0 text-white text-decoration-none">
         <img src="{% static 'images/theBeatles.png' %}" alt="ALT TEXT" height="55" width="60">
       </a>
       <ul class="nav col-12 col-lg-auto me-lg-auto mb-2 justify-content-center mb-md-0">
-        <li><a href="{% url 'index' %}" class="nav-link px-2 {% if active == 'home' %} text-primary {% else %} text-dark {% endif %}">Home</a></li>
-        <li><a href="{% url 'restrooms' %}" class="nav-link px-2 {% if active == 'restrooms' %} text-primary {% else %} text-dark {% endif %}">Restrooms</a></li>
-        <li><a href="{% url 'area_of_focus' %}" class="nav-link px-2 {% if active == 'aof' %} text-primary {% else %} text-dark {% endif %}">Area of Focus</a></li>
-        <li><a href="{% url 'about' %}" class="nav-link px-2 {% if active == 'about' %} text-primary {% else %} text-dark {% endif %}">About</a></li>
-        <li><a href="{% url 'contact' %}" class="nav-link px-2 {% if active == 'contact' %} text-primary {% else %} text-dark {% endif %}">Contact</a></li>
+        <li><a href="{% url 'index' %}" class="nav-link px-2" style="color:black;font-size: 15px;font-weight: bold;margin-right: 20px;margin-left:20px;{% if active == 'home' %} width:90px;background-color: #2c3e50;color: white;padding: 5px 20px;border-radius: 20px;text-decoration: none;display: inline-block;transition: background-color 0.3s ease;text-align:center; {% endif %}">Home</a></li>
+<!--        <li><a href="{% url 'restrooms' %}" class="nav-link px-2 {% if active == 'restrooms' %} text-primary {% else %} text-dark {% endif %}">Restrooms</a></li>-->
+        <li><a href="{% url 'area_of_focus' %}" class="nav-link px-2" style="color:black;font-size: 15px;font-weight: bold;margin-right: 20px;{% if active == 'aof' %} width:150px;background-color: #2c3e50;color: white;padding: 5px 20px;border-radius: 20px;text-decoration: none;display: inline-block;transition: background-color 0.3s ease;text-align:center; {% endif %}">Area of Focus</a></li>
+        <li><a href="{% url 'about' %}" class="nav-link px-2" style="color:black;font-size: 15px;font-weight: bold;margin-right: 20px;{% if active == 'about' %} width:90px;background-color: #2c3e50;color: white;padding: 5px 20px;border-radius: 20px;text-decoration: none;display: inline-block;transition: background-color 0.3s ease;text-align:center; {% endif %}">About</a></li>
+        <li><a href="{% url 'contact' %}" class="nav-link px-2" style="color:black;font-size: 15px;font-weight: bold;{% if active == 'contact' %} width:90px;background-color: #2c3e50;color: white;padding: 5px 20px;border-radius: 20px;text-decoration: none;display: inline-block;transition: background-color 0.3s ease;text-align:center; {% endif %}">Contact</a></li>
       </ul>
 
       <div class="text-end">
         {%  if user.is_authenticated %}
           <div class="dropdown text-end">
             <a href="#" class="d-block link-dark text-decoration-none dropdown-toggle" id="dropdownUser1" data-bs-toggle="dropdown" aria-expanded="false">
-              <img src="{% static 'images/person.png' %}" alt="mdo" width="32" height="32" class="rounded-circle">
+              <img src="{% static 'images/person.png' %}" alt="mdo" width="32" height="32" class="rounded-circle"> Welcome, {{ user.firstName }}
             </a>
             <ul class="dropdown-menu text-small" aria-labelledby="dropdownUser1">
               <li><a class="dropdown-item" href="{% url 'accounts_forgot' %}">Forgot Password</a></li>
@@ -27,8 +27,9 @@
             </ul>
           </div>
         {% else %}
-          <a href="{% url 'accounts_signin' %}"><button type="button" class="btn btn-outline-light me-2">Login</button></a>
-        <a href="{% url 'accounts_register' %}"><button type="button" class="btn btn-warning">Sign-up</button></a>
+          <a href="{% url 'accounts_signin' %}"><button type="button" class="btn me-2" style="width:90px;background-color: #ff6b6b;color: white;padding: 5px 20px;border-radius: 20px;text-decoration: none;display: inline-block;transition: background-color 0.3s ease;text-align:center;font-size: 15px;font-weight: bold;">Login</button></a>
+        <a href="{% url 'accounts_signin' %}"><button type="button" class="btn me-2" style="width:115px;background-color: #c0392b;color: white;padding: 5px 20px;border-radius: 20px;text-decoration: none;display: inline-block;transition: background-color 0.3s ease;text-align:center;font-size: 15px;font-weight: bold;">Emergency</button></a>
+<!--          <a href="{% url 'accounts_register' %}"><button type="button" class="btn btn-warning">Sign-up</button></a>-->
         {% endif %}
       </div>
     </div>
