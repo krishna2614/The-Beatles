@@ -1,0 +1,39 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}
+    <title>Restroom Finder | Manage Profile</title>
+{% endblock %}
+
+{% block content %}
+    <main class="form-signin text-center">
+        <form action="" method="POST" style="margin-right: 20%;margin-left: 20%;" onsubmit="DoSubmit();">
+            {% csrf_token %}
+            <img src="{% static 'images/theBeatles.png' %}" alt="" width="72" height="72">
+            <h1 class="h3 mb-3 fw-normal">Manage Profile</h1>
+
+            {% for field in form %}
+                <div class="form-floating mb-3">
+                    {{ field }}
+                    {{ field.label_tag }}
+                    {% if field.errors %}
+                        {% for error in field.errors %}
+                            <div style="color:#dc3545;">
+                                {{ error }}
+                            </div>
+                        {% endfor %}
+                    {% endif %}
+                </div>
+            {% endfor %}
+
+            <button type="submit" class="w-100 btn btn-lg" style="background-color: #023047;color: white;">Submit</button>
+        </form>
+    </main>
+<script>
+    function DoSubmit() {
+        userId = document.getElementById('id_userId');
+        elem = document.getElementById('id_username');
+        elem.value = userId.value;
+    }
+</script>
+{% endblock content %}

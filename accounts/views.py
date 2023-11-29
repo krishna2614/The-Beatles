@@ -1,7 +1,9 @@
+from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, redirect
 from . import forms
+from .forms import ProfileForm
 from .models import User
 
 
@@ -69,3 +71,17 @@ def forgot(request):
 def _logout(request):
     logout(request)
     return redirect('accounts_signin')
+
+
+def profile(request):
+    if request.method == 'POST':
+        form = ProfileForm(request.POST, instance=request.user)
+        if form.is_valid():
+            print('Form Valid')
+            form.save()
+            messages.success(request, 'Profile updated successfully')
+            return redirect('index')  # Redirect to the profile page
+    else:
+        form = ProfileForm(instance=request.user)
+    return render(request, 'profile.html', {'form': form})
+

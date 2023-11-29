@@ -12,11 +12,12 @@
 
 {% block content %}
     <div class="search-container d-flex align-items-center justify-content-center p-3 bg-light rounded-3 shadow-sm mx-auto my-3" style="border-radius:2.3rem !important;border: 0.5px solid #ced4da;">
-        <input type="text" class="form-control me-2" placeholder="Find Nearest Restrooms" id="autocomplete">
+        <input type="text" class="form-control me-2" placeholder="Find Nearest Restrooms" id="autocomplete" list="history-list">
+        <datalist id="history-list">
+          <!-- Search history options will be populated here -->
+        </datalist>
         <button class="btn" style="background-color:#2c3e50;color:White;border-radius:20px;" data-bs-toggle="modal" data-bs-target="#filterModal">Filter</button>
     </div>
-
-
 
     <!-- Filter Modal -->
     <div class="modal fade" id="filterModal" tabindex="-1" aria-labelledby="filterModalLabel" aria-hidden="true">
@@ -29,8 +30,6 @@
           <div class="modal-body">
             <!-- Filter Form -->
             <form id="filterForm" method="get" action="">
-              <!-- Your filter fields here -->
-              <!-- Example: -->
                 <div class="mb-3">
                 <label for="sort" class="form-label">Rating</label>
                 <select class="form-select" id="sort" name="sort">
@@ -68,10 +67,15 @@
 
     <div id="map" style="width: 100%; height: 400px;"></div> <!-- The map container -->
 
+    <div id="pagination"></div>
+
 <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCxEhJzSEW4WQOINMyTdUblD0w5WRd-n4w&libraries=places&callback=initMap" async defer></script>
 <script>
         var map, directionsService, directionsRenderer, currentLocation, currentRouteSteps;
         var isCurrentLocationAvailable = false;
+        var currentPage = 1;
+        var itemsPerPage = 5;
+        var nearbyRestrooms = [];
 
         function initMap() {
 
@@ -94,7 +98,7 @@
                     console.log("No details available for input: '" + place.name + "'");
                     return;
                 }
-
+                sendSearchQuery(place.name);
                 // Find nearby restrooms based on the selected place's location
                 findNearbyRestrooms(place.geometry.location);
             });
@@ -103,24 +107,29 @@
             getCurrentLocation();
         }
 
-        function calculateAndDisplayRoute(directionsService, directionsRenderer, origin, destination, mapContainer) {
+        function calculateDistanceForRestroom(restroom, callback) {
+            const origin = new google.maps.LatLng(currentLocation.lat(), currentLocation.lng());
+            const destination = new google.maps.LatLng(restroom.lat, restroom.lng);
+
             directionsService.route({
                 origin: origin,
                 destination: destination,
                 travelMode: google.maps.TravelMode.DRIVING
             }, function(response, status) {
                 if (status === 'OK') {
-                    // Set the map to the new container
-                    directionsRenderer.setMap(new google.maps.Map(mapContainer, {
-                        zoom: 8
-                    }));
-                    directionsRenderer.setDirections(response);
-                    mapContainer.style.display = 'block'; // Show the map
+                    const route = response.routes[0];
+                    const leg = route.legs[0];
+                    const distance = leg.distance.text;
+                    const duration = leg.duration.text
+                    callback(distance, duration);
                 } else {
                     console.log('Directions request failed due to ' + status);
+                    callback(null, null);
                 }
             });
         }
+
+
 
         function findNearbyRestrooms(location) {
             let service = new google.maps.places.PlacesService(document.createElement('div'));
@@ -148,6 +157,7 @@
                                 lat: placeResult.geometry.location.lat(),
                                 lng: placeResult.geometry.location.lng(),
                                 name: placeResult.name,
+                                distance: placeResult,
                                 rating: placeResult.rating ? placeResult.rating : null,
                                 photoUrl: placeResult.photos ? placeResult.photos[0].getUrl() : null
                             });
@@ -163,6 +173,10 @@
         }
 
         function handleNearbyRestrooms(restrooms) {
+            let startIndex = (currentPage - 1) * itemsPerPage;
+            let endIndex = Math.min(startIndex + itemsPerPage, restrooms.length);
+            let paginatedRestrooms = restrooms.slice(startIndex, endIndex);
+
             // Find or create a container element to display the restrooms
             let container = document.getElementById('restroomsList');
             if (!container) {
@@ -175,56 +189,171 @@
             container.innerHTML = '';
 
             // Loop through the restrooms array and create card items
-            restrooms.forEach(function(restroom, index) {
+            paginatedRestrooms.forEach(function(restroom, index) {
                 // Create the card element with Bootstrap classes
                 let card = document.createElement('div');
                 card.classList.add('card', 'mb-3');
 
+                card.setAttribute('style', 'width: 75%;margin-left: auto;margin-right: auto;')
+
                 // Add restroom details to the card
                 let cardBody = document.createElement('div');
-                cardBody.classList.add('card-body');
+                cardBody.classList.add('card-body', 'd-flex', 'justify-content-between');
+
+                let textContentDiv = document.createElement('div');
 
                 let title = document.createElement('h5');
                 title.classList.add('card-title');
+                title.setAttribute('style', "font-weight:bold;");
                 title.textContent = restroom.name;
 
                 let text = document.createElement('p');
-                text.classList.add('card-text');
+                text.classList.add('card-text', 'm-0');
                 text.textContent = restroom.address;
 
-                if (isCurrentLocationAvailable) {
-                    let button = document.createElement('a');
-                    button.classList.add('btn', 'btn-primary', 'get-directions-btn');
-                    button.textContent = 'Get Directions';
-                    button.setAttribute('href', '#');
-                    button.setAttribute('data-lat', restroom.lat);
-                    button.setAttribute('data-lng', restroom.lng);
-                    button.addEventListener('click', function(e) {
-                        e.preventDefault();
-                        removeExistingMapContainers();
-                        let mapContainer = createMapContainer(index);
-                        insertMapContainerAfter(card, mapContainer);
+                let rating = document.createElement('p');
+                rating.classList.add('card-text', 'm-0');
+                rating.textContent = "Rating: "+ restroom.rating;
 
-                        if (currentLocation) {
-                            let destination = new google.maps.LatLng(parseFloat(this.getAttribute('data-lat')), parseFloat(this.getAttribute('data-lng')));
-                            calculateAndDisplayRoute(directionsService, directionsRenderer, currentLocation, destination, mapContainer);
-                        } else {
-                            console.log("Current location is not yet defined.");
-                        }
-                    });
-                    cardBody.appendChild(button);
+                let distance = document.createElement('p');
+                distance.classList.add('card-text', 'm-0');
+                distance.textContent = "Distance: "+ null;
+
+                let duration = document.createElement('p');
+                duration.classList.add('card-text', 'm-0');
+                duration.textContent = "Duration: "+ null;
+
+                textContentDiv.appendChild(title);
+                textContentDiv.appendChild(text);
+                textContentDiv.appendChild(rating);
+                if (isCurrentLocationAvailable) {
+                    textContentDiv.appendChild(distance);
+                    textContentDiv.appendChild(duration);
                 }
 
-                // Append elements to the card body
-                cardBody.appendChild(title);
-                cardBody.appendChild(text);
+                cardBody.appendChild(textContentDiv);
+
+                if (isCurrentLocationAvailable) {
+                    calculateDistanceForRestroom(restroom, function(calculatedDistance, calculatedDuration) {
+                        if (calculatedDistance) {
+                            distance.textContent = "Distance: " + calculatedDistance;
+                            duration.textContent = "Duration: " + calculatedDuration;
+                        } else {
+                            distance.textContent = "Distance: Not available";
+                            duration.textContent = "Duration: Not available";
+                        }
+                    });
+                }
+
+                // Create a container for the heart icon and the button
+                let actionContainer = document.createElement('div');
+                actionContainer.classList.add('d-flex', 'justify-content-between', 'align-items-center');
+
+                // let heartLink = document.createElement('a');
+
+                // Create the heart symbol element
+                let heartIcon = document.createElement('i');
+                heartIcon.classList.add('bi', 'bi-heart', 'heart-icon'); // Use 'bi-heart-fill' for a filled heart icon
+                heartIcon.style.cursor = 'pointer'; // Change cursor on hover
+                heartIcon.style.fontSize = '1.5rem'
+                heartIcon.style.marginRight = '10px';
+                heartIcon.setAttribute('data-id', index);
+
+                heartIcon.addEventListener('click', function(e) {
+                    // Add favorite toggle logic here (will be explained later)
+                });
+
+                actionContainer.appendChild(heartIcon);
+
+                // Create the button element
+                let button = document.createElement('a');
+                button.classList.add('btn', 'btn-primary', 'get-directions-btn', 'responsive-button');
+                button.textContent = 'Get Directions';
+                button.style.height = '40px';
+
+                let div = document.createElement('div');
+                div.classList.add('row');
+                div.setAttribute('style', "margin-top:auto;margin-bottom:auto;");
+
+                // let button = document.createElement('a');
+                // button.classList.add('btn', 'btn-primary', 'get-directions-btn', 'responsive-button');
+                if (!isCurrentLocationAvailable) {
+                    actionContainer.setAttribute('title', "Please Login & Grant Location Permission");
+                    button.classList.add('disabled');
+                }
+
+                button.setAttribute('style', "margin-top:auto;margin-bottom:auto;");
+
+                button.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    let origin = currentLocation.lat() + ',' + currentLocation.lng();
+                    let destination = restroom.lat + ',' + restroom.lng;
+                    let googleMapsUrl = `https://www.google.com/maps/dir/?api=1&origin=${origin}&destination=${destination}&travelmode=driving`;
+                    window.open(googleMapsUrl, '_blank');
+                });
+                actionContainer.appendChild(button);
+                cardBody.appendChild(actionContainer);
 
 
-                // Append the card body to the card, and the card to the container
+                // Append the flex container to the card body instead of individual elements
                 card.appendChild(cardBody);
                 container.appendChild(card);
             });
+            updatePaginationControls(restrooms.length);
         }
+
+        function handleRouteData(distance, duration) {
+            console.log("Distance: " + distance + ", Duration: " + duration);
+        }
+
+        function updatePaginationControls(totalItems) {
+            let totalPages = Math.ceil(totalItems / itemsPerPage);
+            let paginationElement = document.getElementById('pagination');
+            if (!paginationElement) {
+                // Create pagination element if it does not exist
+                paginationElement = document.createElement('nav');
+                paginationElement.id = 'pagination';
+                document.body.appendChild(paginationElement);
+            }
+            paginationElement.innerHTML = ''; // Clear existing controls
+
+            // Create a flex container div for centering
+            let flexContainer = document.createElement('div');
+            flexContainer.classList.add('d-flex', 'justify-content-center');
+
+            // Create the UL element for pagination
+            let ul = document.createElement('ul');
+            ul.classList.add('pagination');
+
+            for (let i = 1; i <= totalPages; i++) {
+                let li = document.createElement('li');
+                li.classList.add('page-item');
+                if (currentPage === i) {
+                    li.classList.add('active'); // Highlight the current page
+                }
+
+                let a = document.createElement('a');
+                a.classList.add('page-link');
+                a.href = '#';
+                a.textContent = i;
+                a.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    currentPage = i;
+                    handleNearbyRestrooms(nearbyRestrooms);
+                });
+
+                li.appendChild(a);
+                ul.appendChild(li);
+            }
+
+            // Append the UL element to the flex container
+            flexContainer.appendChild(ul);
+
+            // Append the flex container to the pagination element
+            paginationElement.appendChild(flexContainer);
+        }
+
+
 
         function removeExistingMapContainers() {
             let existingContainers = document.querySelectorAll('.map-container');
@@ -264,6 +393,124 @@
                 isCurrentLocationAvailable = false;
             }
         }
+
+        function sendSearchQuery(query) {
+            fetch('/api/store-search-query/', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    // Include CSRF token in the headers if needed
+                },
+                body: JSON.stringify({ query: query })
+            })
+            .then(response => response.json())
+            .then(data => console.log(data))
+            .catch(error => console.error('Error:', error));
+        }
+
+        function getParameterByName(name, url = window.location.href) {
+            name = name.replace(/[\[\]]/g, '\\$&');
+            const regex = new RegExp('[?&]' + name + '(=([^&#]*)|&|#|$)'),
+                  results = regex.exec(url);
+            if (!results) return null;
+            if (!results[2]) return '';
+            return decodeURIComponent(results[2].replace(/\+/g, ' '));
+        }
+
+        let sortPreference = getParameterByName('sort');
+        if (sortPreference && nearbyRestrooms.length != 0) {
+            if(nearbyRestrooms.length != 0){
+                // Get sorting preference
+                let sortPreference = document.getElementById('sort').value;
+                console.log(sortPreference);
+                // Sort restrooms array based on the preference
+                if (sortPreference === 'distance') {
+                    nearbyRestrooms.sort((a, b) => a.distanceValue - b.distanceValue);
+                } else if (sortPreference === 'rating') {
+                    nearbyRestrooms.sort((a, b) => b.rating - a.rating);
+                }
+                // handleNearbyRestrooms(nearbyRestrooms);
+            }
+            console.log(sortPreference);
+        }
+
+        document.getElementById('autocomplete').addEventListener('focus', function() {
+            fetch('api/get-search-history/', {
+                method: 'GET',
+                headers: {
+                    'X-Requested-With': 'XMLHttpRequest',  // Required for Django to recognize AJAX request
+                }
+            })
+            .then(response => response.json())
+            .then(data => {
+                const historyDataList = document.getElementById('history-list');
+                // Clear existing options
+                historyDataList.innerHTML = '';
+
+                // Populate datalist with history items
+                data.history.forEach(item => {
+                    const option = document.createElement('option');
+                    option.value = item.query;
+                    historyDataList.appendChild(option);
+                });
+            })
+            .catch(error => console.error('Error:', error));
+        });
+
+        document.querySelectorAll('.heart-icon').forEach(item => {
+            item.addEventListener('click', function(e) {
+                const itemId = this.getAttribute('data-id');
+                if (!this.classList.contains('bi-heart-fill')) {
+                    this.classList.replace('bi-heart', 'bi-heart-fill');
+                    updateFavorite(itemId, true);
+                } else {
+                    this.classList.replace('bi-heart-fill', 'bi-heart');
+                    updateFavorite(itemId, false);
+                }
+            });
+        });
+
+
+        function updateFavorite(itemId, isFavorite) {
+            // Collect all necessary restroom details
+            const restroomDetails = {
+                // Add details like name, address, etc., based on your requirements
+            };
+
+            fetch('/path/to/favorite/view', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRFToken': getCookie('csrftoken')
+                },
+                body: JSON.stringify({
+                    item_id: itemId,
+                    favorite: isFavorite,
+                    details: restroomDetails
+                })
+            })
+            .then(response => response.json())
+            .then(data => console.log(data))
+            .catch(error => console.error('Error:', error));
+        }
+
+        function getCookie(name) {
+            let cookieValue = null;
+            if (document.cookie && document.cookie !== '') {
+                const cookies = document.cookie.split(';');
+                for (let i = 0; i < cookies.length; i++) {
+                    const cookie = cookies[i].trim();
+                    if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                        cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                        break;
+                    }
+                }
+            }
+            return cookieValue;
+        }
+
+
+
 
 </script>
 {% endblock content %}

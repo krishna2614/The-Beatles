@@ -8,11 +8,8 @@
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
 <style>
-*{
-background-color: ;
-}
 
-    /* Container for the search area */
+/* Container for the search area */
 .search-container {
     max-width: 600px; /* Adjust to desired max-width */
     width: 100%; /* Takes up 100% of the container it's in, up to max-width */
@@ -64,5 +61,12 @@ background-color: ;
     display: none;
 }
 
+@media (max-width: 480px) {
+  .responsive-button {
+    font-size: 4vw; /* Adjust font size based on viewport width */
+    padding: 4vw; /* Adjust padding based on viewport width */
+    height:65px !important;
+  }
+}
 
 </style>

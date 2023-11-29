@@ -1,0 +1,60 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block active %}
+    {% with active='aof' %}{{ block.super }}{% endwith %}
+{% endblock %}
+
+{% block title %}
+    <title>The Beatles | Area of Focus</title>
+{% endblock %}
+
+{% block content %}
+    <main>
+    <section class="py-5">
+      <div class="container">
+        <div class="row">
+          <div class="col-lg-8 mx-auto">
+            <!-- Article header -->
+            <header class="mb-4">
+              <h1 class="fw-bolder mb-1">The Importance of Accessibility in Public Spaces</h1>
+              <div class="text-muted fst-italic mb-2">Posted on January 15, 2023</div>
+              <!-- Author's name if needed -->
+              <!-- <div class="byline">By Jane Doe</div> -->
+            </header>
+
+            <!-- Preview image if available -->
+            <!-- <figure class="mb-4">
+              <img class="img-fluid rounded" src="path-to-your-image.jpg" alt="...">
+            </figure> -->
+
+            <!-- Article content -->
+            <section class="mb-5">
+              <p class="fs-5 mb-4">Access to public spaces is a critical issue for individuals with disabilities. This article explores the challenges and the solutions that can make a difference...</p>
+
+              <!-- The rest of the article content goes here -->
+              <p>... additional paragraphs ...</p>
+
+              <!-- You can also embed images within the article body -->
+              <!-- <figure class="mb-4">
+                <img class="img-fluid rounded" src="path-to-another-image.jpg" alt="...">
+                <figcaption class="mt-2 text-muted">Caption for the image.</figcaption>
+              </figure> -->
+
+              <!-- Conclusion -->
+              <p>... concluding paragraphs ...</p>
+            </section>
+
+            <!-- Author Bio -->
+            <!-- <section class="mb-5">
+              <h2>About the Author</h2>
+              <p class="fs-5 mb-4">Jane Doe is an accessibility advocate with over a decade of experience...</p>
+            </section> -->
+
+            <!-- Comments or related articles could also go here -->
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+{% endblock content %}
