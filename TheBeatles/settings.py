@@ -45,7 +45,7 @@ INSTALLED_APPS = [
     'contact',
     'restrooms',
     'searchHistory',
-    'favorrites',
+    'favorites',
     'whitenoise.runserver_nostatic',
 ]
 
