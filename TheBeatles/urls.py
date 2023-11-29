@@ -27,7 +27,8 @@ urlpatterns = [
     path('areaoffocus/', include('areaOfFocus.urls')),
     path('restrooms/', include('restrooms.urls')),
     path('contact/', include('contact.urls')),
-    path('api/', include('searchHistory.urls'))
+    path('api/', include('searchHistory.urls')),
+    path('fav/', include('favorites.urls'))
 ]
 
 if settings.DEBUG:

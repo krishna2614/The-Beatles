@@ -31,7 +31,7 @@
             <!-- Filter Form -->
             <form id="filterForm" method="get" action="">
                 <div class="mb-3">
-                <label for="sort" class="form-label">Rating</label>
+                <label for="sort" class="form-label">Sort By</label>
                 <select class="form-select" id="sort" name="sort">
                   <option value="">Sort By</option>
                   <option value="distance">Distance</option>
@@ -48,16 +48,10 @@
                   <option value="5.0">5.0</option>
                 </select>
               </div>
-                <div class="mb-3">
-                    <input type="checkbox" id="w_chair_comp" name="w_chair_comp" value="yes">
-                    <label for="w_chair_comp"> Wheelchair Accessible Entrance</label><br>
-              </div>
-              <!-- Add more filters as needed -->
             </form>
           </div>
           <div class="modal-footer">
             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-            <button type="submit" form="filterForm" class="btn btn-primary">Apply</button>
           </div>
         </div>
       </div>
@@ -75,7 +69,20 @@
         var isCurrentLocationAvailable = false;
         var currentPage = 1;
         var itemsPerPage = 5;
-        var nearbyRestrooms = [];
+        // var nearbyRestrooms = [];
+        var favorites;
+        let data = {
+            _nearbyRestrooms: [], // the variable you want to observe
+
+            get nearbyRestrooms() {
+                return this._nearbyRestrooms;
+            },
+
+            set nearbyRestrooms(value) {
+                this._nearbyRestrooms = value;
+                applyFilters(); // Call applyFilters whenever the variable changes
+            }
+        };
 
         function initMap() {
 
@@ -143,7 +150,7 @@
 
         function processNearbyRestroomResults(results, status) {
             if (status === google.maps.places.PlacesServiceStatus.OK) {
-                nearbyRestrooms = []; // Clear previous restroom places
+                data.nearbyRestrooms = [] // Clear previous restroom places
                 let detailsCounter = 0; // A counter to track the number of details fetched
                 results.forEach(place => {
                     const service = new google.maps.places.PlacesService(document.createElement('div'));
@@ -151,20 +158,27 @@
                         placeId: place.place_id
                     }, (placeResult, placeStatus) => {
                         if (placeStatus === google.maps.places.PlacesServiceStatus.OK) {
+
+                            const latToCheck = placeResult.geometry.location.lat();
+                            const lngToCheck = placeResult.geometry.location.lng();
+
+                            const exists = favorites.some(favorites => favorites.lat === latToCheck && favorites.lng === lngToCheck);
+
                             // Save the detailed information
-                            nearbyRestrooms.push({
+                            data.nearbyRestrooms.push({
                                 address: placeResult.formatted_address,
                                 lat: placeResult.geometry.location.lat(),
                                 lng: placeResult.geometry.location.lng(),
                                 name: placeResult.name,
-                                distance: placeResult,
+                                distance: 0,
                                 rating: placeResult.rating ? placeResult.rating : null,
-                                photoUrl: placeResult.photos ? placeResult.photos[0].getUrl() : null
+                                photoUrl: placeResult.photos ? placeResult.photos[0].getUrl() : null,
+                                isFav: exists
                             });
 
                             // When all details have been fetched, handle the data
                             if (++detailsCounter === results.length) {
-                                handleNearbyRestrooms(nearbyRestrooms);
+                                handleNearbyRestrooms(data.nearbyRestrooms);
                             }
                         }
                     });
@@ -238,9 +252,11 @@
                         if (calculatedDistance) {
                             distance.textContent = "Distance: " + calculatedDistance;
                             duration.textContent = "Duration: " + calculatedDuration;
+                            restroom.distance = calculatedDistance;
                         } else {
                             distance.textContent = "Distance: Not available";
                             duration.textContent = "Duration: Not available";
+                            restroom.distance = 0;
                         }
                     });
                 }
@@ -250,10 +266,15 @@
                 actionContainer.classList.add('d-flex', 'justify-content-between', 'align-items-center');
 
                 // let heartLink = document.createElement('a');
-
+                // console.log(favorites);
                 // Create the heart symbol element
                 let heartIcon = document.createElement('i');
-                heartIcon.classList.add('bi', 'bi-heart', 'heart-icon'); // Use 'bi-heart-fill' for a filled heart icon
+                if(restroom.isFav) {
+                    heartIcon.classList.add('bi', 'bi-heart-fill', 'heart-icon');
+                    heartIcon.style.color = 'red';
+                } else {
+                    heartIcon.classList.add('bi', 'bi-heart', 'heart-icon');
+                }
                 heartIcon.style.cursor = 'pointer'; // Change cursor on hover
                 heartIcon.style.fontSize = '1.5rem'
                 heartIcon.style.marginRight = '10px';
@@ -339,7 +360,7 @@
                 a.addEventListener('click', function(e) {
                     e.preventDefault();
                     currentPage = i;
-                    handleNearbyRestrooms(nearbyRestrooms);
+                    handleNearbyRestrooms(data.nearbyRestrooms);
                 });
 
                 li.appendChild(a);
@@ -399,7 +420,6 @@
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
-                    // Include CSRF token in the headers if needed
                 },
                 body: JSON.stringify({ query: query })
             })
@@ -408,31 +428,35 @@
             .catch(error => console.error('Error:', error));
         }
 
-        function getParameterByName(name, url = window.location.href) {
-            name = name.replace(/[\[\]]/g, '\\$&');
-            const regex = new RegExp('[?&]' + name + '(=([^&#]*)|&|#|$)'),
-                  results = regex.exec(url);
-            if (!results) return null;
-            if (!results[2]) return '';
-            return decodeURIComponent(results[2].replace(/\+/g, ' '));
-        }
+        document.addEventListener('DOMContentLoaded', function() {
+            // Attach event listeners to filter elements
+            document.getElementById('sort').addEventListener('change', applyFilters);
+            document.getElementById('rating').addEventListener('change', applyFilters);
 
-        let sortPreference = getParameterByName('sort');
-        if (sortPreference && nearbyRestrooms.length != 0) {
-            if(nearbyRestrooms.length != 0){
-                // Get sorting preference
-                let sortPreference = document.getElementById('sort').value;
+            // Initial filter application
+            applyFilters();
+        });
+
+        function applyFilters() {
+            let sortPreference = document.getElementById('sort').value;
+            let ratingPreference = document.getElementById('rating').value;
+
+            console.log(data.nearbyRestrooms);
+            if(data.nearbyRestrooms.length != 0){
                 console.log(sortPreference);
                 // Sort restrooms array based on the preference
                 if (sortPreference === 'distance') {
-                    nearbyRestrooms.sort((a, b) => a.distanceValue - b.distanceValue);
+                    console.log(typeof data.nearbyRestrooms[0].distance);
+                    data.nearbyRestrooms.sort((a, b) => parseFloat(a.distance) - parseFloat(b.distance));
                 } else if (sortPreference === 'rating') {
-                    nearbyRestrooms.sort((a, b) => b.rating - a.rating);
+                    data.nearbyRestrooms.sort((a, b) => b.rating - a.rating);
                 }
-                // handleNearbyRestrooms(nearbyRestrooms);
+                console.log(data.nearbyRestrooms);
+                handleNearbyRestrooms(data.nearbyRestrooms);
             }
-            console.log(sortPreference);
         }
+
+
 
         document.getElementById('autocomplete').addEventListener('focus', function() {
             fetch('api/get-search-history/', {
@@ -457,42 +481,68 @@
             .catch(error => console.error('Error:', error));
         });
 
-        document.querySelectorAll('.heart-icon').forEach(item => {
-            item.addEventListener('click', function(e) {
-                const itemId = this.getAttribute('data-id');
-                if (!this.classList.contains('bi-heart-fill')) {
-                    this.classList.replace('bi-heart', 'bi-heart-fill');
-                    updateFavorite(itemId, true);
-                } else {
-                    this.classList.replace('bi-heart-fill', 'bi-heart');
-                    updateFavorite(itemId, false);
+        document.addEventListener('DOMContentLoaded', function() {
+            // Fetch the user's favorite restrooms
+            fetch('/fav/get-user-favorites/', {
+                headers: {
+                    'X-Requested-With': 'XMLHttpRequest',
+                }
+            })
+            .then(response => response.json())
+            .then(fav_data => {
+                favorites = fav_data.favorites;
+                document.querySelectorAll('.restroom').forEach(restroomElement => {
+                    const restroomId = restroomElement.getAttribute('data-id');
+                    if (favorites.includes(restroomId)) {
+                        const heartIcon = restroomElement.querySelector('.heart-icon');
+                        if (heartIcon) {
+                            heartIcon.classList.replace('bi-heart', 'bi-heart-fill');
+                            heartIcon.style.color = 'red';
+                        }
+                    }
+                });
+            })
+            .catch(error => console.error('Error:', error));
+        });
+
+        document.addEventListener('DOMContentLoaded', function() {
+            document.body.addEventListener('click', function(e) {
+                if (e.target && e.target.matches('.heart-icon')) {
+                    const itemId = e.target.getAttribute('data-id');
+                    const id = parseInt(itemId) + parseInt((currentPage - 1) * itemsPerPage);
+                    const restroomData = data.nearbyRestrooms[id];
+
+                    if (!e.target.classList.contains('bi-heart-fill')) {
+                        e.target.classList.replace('bi-heart', 'bi-heart-fill');
+                        e.target.style.color = 'red';
+                        updateFavorite(restroomData, true);
+                    } else {
+                        e.target.classList.replace('bi-heart-fill', 'bi-heart');
+                        e.target.style.color = 'initial';
+                        updateFavorite(restroomData, false);
+                    }
                 }
             });
         });
 
 
-        function updateFavorite(itemId, isFavorite) {
-            // Collect all necessary restroom details
-            const restroomDetails = {
-                // Add details like name, address, etc., based on your requirements
-            };
-
-            fetch('/path/to/favorite/view', {
+        function updateFavorite(restroomData, isFavorite) {
+            fetch('/fav/update-favorite/', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
                     'X-CSRFToken': getCookie('csrftoken')
                 },
                 body: JSON.stringify({
-                    item_id: itemId,
-                    favorite: isFavorite,
-                    details: restroomDetails
+                    restroom: restroomData,
+                    favorite: isFavorite
                 })
             })
             .then(response => response.json())
-            .then(data => console.log(data))
+            .then(data => console.log("Response from server:", data))
             .catch(error => console.error('Error:', error));
         }
+
 
         function getCookie(name) {
             let cookieValue = null;
@@ -508,9 +558,6 @@
             }
             return cookieValue;
         }
-
-
-
 
 </script>
 {% endblock content %}
