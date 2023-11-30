@@ -500,8 +500,6 @@
                 const id = parseInt(itemId) + parseInt((currentPage - 1) * itemsPerPage);
                 let restroomData;
                 if(filteredFav.length != 0) {
-                    console.log(filteredFav[id]);
-                    console.log(id);
                     restroomData = filteredFav[id];
                 } else {
                     restroomData = data.nearbyRestrooms[id];
