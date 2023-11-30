@@ -63,6 +63,11 @@
 
     <div id="pagination"></div>
 
+<script type="text/javascript">
+
+    var isLoggedIn = {% if user.is_authenticated %}true{% else %}false{% endif %};
+</script>
+
 <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCxEhJzSEW4WQOINMyTdUblD0w5WRd-n4w&libraries=places&callback=initMap" async defer></script>
 <script>
         var map, directionsService, directionsRenderer, currentLocation, currentRouteSteps;
@@ -268,23 +273,21 @@
                 // let heartLink = document.createElement('a');
                 // console.log(favorites);
                 // Create the heart symbol element
-                let heartIcon = document.createElement('i');
-                if(restroom.isFav) {
-                    heartIcon.classList.add('bi', 'bi-heart-fill', 'heart-icon');
-                    heartIcon.style.color = 'red';
-                } else {
-                    heartIcon.classList.add('bi', 'bi-heart', 'heart-icon');
+                if (isLoggedIn) {
+                    let heartIcon = document.createElement('i');
+                    if(restroom.isFav) {
+                        heartIcon.classList.add('bi', 'bi-heart-fill', 'heart-icon');
+                        heartIcon.style.color = 'red';
+                    } else {
+                        heartIcon.classList.add('bi', 'bi-heart', 'heart-icon');
+                    }
+                    heartIcon.style.cursor = 'pointer'; // Change cursor on hover
+                    heartIcon.style.fontSize = '1.5rem'
+                    heartIcon.style.marginRight = '10px';
+                    heartIcon.setAttribute('data-id', index);
+
+                    actionContainer.appendChild(heartIcon);
                 }
-                heartIcon.style.cursor = 'pointer'; // Change cursor on hover
-                heartIcon.style.fontSize = '1.5rem'
-                heartIcon.style.marginRight = '10px';
-                heartIcon.setAttribute('data-id', index);
-
-                heartIcon.addEventListener('click', function(e) {
-                    // Add favorite toggle logic here (will be explained later)
-                });
-
-                actionContainer.appendChild(heartIcon);
 
                 // Create the button element
                 let button = document.createElement('a');
@@ -557,6 +560,31 @@
                 }
             }
             return cookieValue;
+        }
+
+        document.addEventListener('DOMContentLoaded', function() {
+            // Use 'isLoggedIn' to check if the user is logged in
+            if (isLoggedIn) {
+                // User is logged in - enable features like favoriting
+                enableHeartIcons();
+            } else {
+                // User is not logged in - disable features or modify behavior
+                disableHeartIcons();
+            }
+        });
+
+        function enableHeartIcons() {
+            document.querySelectorAll('.heart-icon').forEach(function(heartIcon) {
+                heartIcon.style.pointerEvents = 'auto'; // Enable click events
+                heartIcon.title = ''; // Remove the tooltip if any
+            });
+        }
+
+        function disableHeartIcons() {
+            document.querySelectorAll('.heart-icon').forEach(function(heartIcon) {
+                heartIcon.style.pointerEvents = 'none'; // Disables click events
+                heartIcon.title = 'Please log in to use this feature'; // Tooltip on hover
+            });
         }
 
 </script>

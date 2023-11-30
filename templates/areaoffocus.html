@@ -2,50 +2,38 @@
 {% load static %}
 
 {% block active %}
-    {% with active='aof' %}{{ block.super }}{% endwith %}
+{% with active='aof' %}{{ block.super }}{% endwith %}
 {% endblock %}
 
 {% block title %}
-    <title>The Beatles | Area of Focus</title>
+<title>The Beatles | Area of Focus</title>
 {% endblock %}
 
 {% block content %}
-     <main>
-    <section class="py-5 bg-light">
-      <div class="container">
-        <div class="row">
-          <div class="col-lg-8 mx-auto">
-            <h1 class="mb-4">Area of Focus</h1>
-            <p class="lead">Explore our collection of articles, insights, and updates about accessible restrooms and the disability community.</p>
-
-            <!-- Example article entry -->
-            <div class="mb-5">
-              <h2><a href="/path-to-article" class="text-decoration-none">The Importance of Accessibility in Public Spaces</a></h2>
-              <p class="text-muted">Posted on January 15, 2023</p>
-              <p>Access to public spaces is a critical issue for individuals with disabilities. This article explores the challenges and the solutions that can make a difference...</p>
-              <a href="/path-to-article" class="btn btn-primary">Read more</a>
-            </div>
-
-            <!-- Repeat the block above for each article entry -->
-
-            <!-- Pagination, if necessary -->
-            <nav aria-label="Page navigation">
-              <ul class="pagination justify-content-center">
-                <li class="page-item disabled">
-                  <a class="page-link" href="#" tabindex="-1" aria-disabled="true">Previous</a>
-                </li>
-                <li class="page-item"><a class="page-link" href="#">1</a></li>
-                <li class="page-item"><a class="page-link" href="#">2</a></li>
-                <li class="page-item"><a class="page-link" href="#">3</a></li>
-                <li class="page-item">
-                  <a class="page-link" href="#">Next</a>
-                </li>
-              </ul>
-            </nav>
-
-          </div>
+<div class="container">
+    <div class="row">
+        <!-- Blog Entries Column -->
+        <div class="col-md-8 mt-3 left">
+            {% if post_list %}
+                {% for post in post_list %}
+                    <div class="card mb-4">
+                        <div class="card-body">
+                            <h2 class="card-title">{{ post.title }}</h2>
+                            <p class="card-text text-muted h6">{{ post.author }} | {{ post.created_on}} </p>
+                            <p class="card-text">{{post.content|slice:":200" }}</p>
+                            <a href="{% url 'post_detail' post.slug  %}" class="btn btn-primary" style="background-color:#2c3e50;">Read More &rarr;</a>
+                        </div>
+                    </div>
+                {% endfor %}
+            {% else %}
+                <div class="card mb-4">
+                    <div class="card-body">
+                        <h2 class="card-title">No Posts Available</h2>
+                    </div>
+                </div>
+            {% endif %}
         </div>
-      </div>
-    </section>
-  </main>
+        {% block sidebar %} {% include 'sidebar.html' %} {% endblock sidebar %}
+    </div>
+</div>
 {% endblock content %}
