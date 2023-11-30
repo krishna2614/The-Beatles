@@ -74,8 +74,9 @@
         var isCurrentLocationAvailable = false;
         var currentPage = 1;
         var itemsPerPage = 5;
-        var filteredRestrooms = [];
         var favorites;
+        var filteredFav;
+
         let data = {
             _nearbyRestrooms: [], // the variable you want to observe
 
@@ -270,11 +271,6 @@
                     heartIcon.style.marginRight = '10px';
                     heartIcon.setAttribute('data-id', index);
 
-                    // Add event listener for the heart icon
-                    heartIcon.addEventListener('click', function(e) {
-                        setupFavoriteListeners(restrooms);
-                    });
-
                     actionContainer.appendChild(heartIcon);
                 }
 
@@ -407,13 +403,13 @@
             let ratingPreference = parseFloat(document.getElementById('rating').value);
 
             // First, filter the restrooms based on the rating
-            let filteredRestrooms = data.nearbyRestrooms.filter(restroom => {
+            filteredFav = data.nearbyRestrooms.filter(restroom => {
                 return isNaN(ratingPreference) || (restroom.rating && restroom.rating >= ratingPreference);
             });
 
             // Then, sort the filtered list based on the sort preference
             if (sortPreference === 'distance') {
-                filteredRestrooms.sort((a, b) => {
+                filteredFav.sort((a, b) => {
                     const parseDistance = (distance) => {
                         if (distance === 0 || distance === "0" || distance === "0 mi") {
                             return Number.MAX_VALUE;
@@ -426,7 +422,7 @@
                     return distanceA - distanceB;
                 });
             } else if (sortPreference === 'rating') {
-                filteredRestrooms.sort((a, b) => {
+                filteredFav.sort((a, b) => {
                     const ratingA = a.rating || 0;
                     const ratingB = b.rating || 0;
                     return ratingB - ratingA;
@@ -434,10 +430,10 @@
             }
 
             // Handle no results
-            if (filteredRestrooms.length === 0) {
+            if (filteredFav.length === 0) {
                 displayNoResultsMessage();
             } else {
-                handleNearbyRestrooms(filteredRestrooms);
+                handleNearbyRestrooms(filteredFav);
             }
         }
 
@@ -498,26 +494,30 @@
             .catch(error => console.error('Error:', error));
         });
 
-        function setupFavoriteListeners(restroomList) {
-            document.body.addEventListener('click', function(e) {
-                if (e.target && e.target.matches('.heart-icon')) {
-                    const itemId = e.target.getAttribute('data-id');
-                    const id = parseInt(itemId) + parseInt((currentPage - 1) * itemsPerPage);
-                    const restroomData = restroomList[id];
-
-                    if (!e.target.classList.contains('bi-heart-fill')) {
-                        e.target.classList.replace('bi-heart', 'bi-heart-fill');
-                        e.target.style.color = 'red';
-                        updateFavorite(restroomData, true);
-                    } else {
-                        e.target.classList.replace('bi-heart-fill', 'bi-heart');
-                        e.target.style.color = 'initial';
-                        updateFavorite(restroomData, false);
-                    }
+        document.body.addEventListener('click', function(e) {
+            if (e.target && e.target.matches('.heart-icon')) {
+                const itemId = e.target.getAttribute('data-id');
+                const id = parseInt(itemId) + parseInt((currentPage - 1) * itemsPerPage);
+                let restroomData;
+                if(filteredFav.length != 0) {
+                    console.log(filteredFav[id]);
+                    console.log(id);
+                    restroomData = filteredFav[id];
+                } else {
+                    restroomData = data.nearbyRestrooms[id];
                 }
-            });
-        }
 
+                if (!e.target.classList.contains('bi-heart-fill')) {
+                    e.target.classList.replace('bi-heart', 'bi-heart-fill');
+                    e.target.style.color = 'red';
+                    updateFavorite(restroomData, true);
+                } else {
+                    e.target.classList.replace('bi-heart-fill', 'bi-heart');
+                    e.target.style.color = 'initial';
+                    updateFavorite(restroomData, false);
+                }
+            }
+        });
 
         function updateFavorite(restroomData, isFavorite) {
             fetch('/fav/update-favorite/', {

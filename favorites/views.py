@@ -17,6 +17,7 @@ def update_favorite(request):
     if request.method == 'POST':
         user = request.user
         data = json.loads(request.body)
+        print(data)
         restroom = data['restroom']
         is_favorite = data['favorite']
         from_fav = data['fromFav']
