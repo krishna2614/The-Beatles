@@ -171,7 +171,7 @@
                                     name: placeResult.name,
                                     distance: null,
                                     duration: null,
-                                    rating: placeResult.rating ? placeResult.rating : null,
+                                    rating: placeResult.rating ? placeResult.rating : 0,
                                     photoUrl: placeResult.photos ? placeResult.photos[0].getUrl() : null,
                                     isFav: favorites.some(fav => fav.lat === placeResult.geometry.location.lat() && fav.lng === placeResult.geometry.location.lng())
                                 };
