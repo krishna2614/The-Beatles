@@ -538,7 +538,8 @@
                 },
                 body: JSON.stringify({
                     restroom: restroomData,
-                    favorite: isFavorite
+                    favorite: isFavorite,
+                    fromFav: false
                 })
             })
             .then(response => response.json())
