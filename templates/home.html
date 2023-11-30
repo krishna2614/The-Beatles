@@ -74,7 +74,7 @@
         var isCurrentLocationAvailable = false;
         var currentPage = 1;
         var itemsPerPage = 5;
-        // var nearbyRestrooms = [];
+        var filteredRestrooms = [];
         var favorites;
         let data = {
             _nearbyRestrooms: [], // the variable you want to observe
@@ -269,6 +269,11 @@
                     heartIcon.style.fontSize = '1.5rem'
                     heartIcon.style.marginRight = '10px';
                     heartIcon.setAttribute('data-id', index);
+
+                    // Add event listener for the heart icon
+                    heartIcon.addEventListener('click', function(e) {
+                        setupFavoriteListeners(restrooms);
+                    });
 
                     actionContainer.appendChild(heartIcon);
                 }
@@ -493,12 +498,12 @@
             .catch(error => console.error('Error:', error));
         });
 
-        document.addEventListener('DOMContentLoaded', function() {
+        function setupFavoriteListeners(restroomList) {
             document.body.addEventListener('click', function(e) {
                 if (e.target && e.target.matches('.heart-icon')) {
                     const itemId = e.target.getAttribute('data-id');
                     const id = parseInt(itemId) + parseInt((currentPage - 1) * itemsPerPage);
-                    const restroomData = data.nearbyRestrooms[id];
+                    const restroomData = restroomList[id];
 
                     if (!e.target.classList.contains('bi-heart-fill')) {
                         e.target.classList.replace('bi-heart', 'bi-heart-fill');
@@ -511,7 +516,8 @@
                     }
                 }
             });
-        });
+        }
+
 
         function updateFavorite(restroomData, isFavorite) {
             fetch('/fav/update-favorite/', {
