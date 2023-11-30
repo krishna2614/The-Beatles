@@ -90,7 +90,6 @@
         };
 
         function initMap() {
-
             map = new google.maps.Map(document.getElementById('map'), {
                 center: {lat: -34.397, lng: 150.644},
                 zoom: 8
@@ -119,29 +118,29 @@
             getCurrentLocation();
         }
 
-        function calculateDistanceForRestroom(restroom, callback) {
-            const origin = new google.maps.LatLng(currentLocation.lat(), currentLocation.lng());
-            const destination = new google.maps.LatLng(restroom.lat, restroom.lng);
+        function calculateDistanceForRestroom(restroom) {
+            return new Promise((resolve, reject) => {
+                const origin = new google.maps.LatLng(currentLocation.lat(), currentLocation.lng());
+                const destination = new google.maps.LatLng(restroom.lat, restroom.lng);
 
-            directionsService.route({
-                origin: origin,
-                destination: destination,
-                travelMode: google.maps.TravelMode.DRIVING
-            }, function(response, status) {
-                if (status === 'OK') {
-                    const route = response.routes[0];
-                    const leg = route.legs[0];
-                    const distance = leg.distance.text;
-                    const duration = leg.duration.text
-                    callback(distance, duration);
-                } else {
-                    console.log('Directions request failed due to ' + status);
-                    callback(null, null);
-                }
+                directionsService.route({
+                    origin: origin,
+                    destination: destination,
+                    travelMode: google.maps.TravelMode.DRIVING
+                }, function(response, status) {
+                    if (status === 'OK') {
+                        const route = response.routes[0];
+                        const leg = route.legs[0];
+                        const distance = leg.distance.text;
+                        const duration = leg.duration.text
+                        resolve({ distance, duration });
+                    } else {
+                        console.log('Directions request failed due to ' + status);
+                        resolve({ distance: null, duration: null });
+                    }
+                });
             });
         }
-
-
 
         function findNearbyRestrooms(location) {
             let service = new google.maps.places.PlacesService(document.createElement('div'));
@@ -153,41 +152,42 @@
             }, processNearbyRestroomResults);
         }
 
-        function processNearbyRestroomResults(results, status) {
+        async function processNearbyRestroomResults(results, status) {
             if (status === google.maps.places.PlacesServiceStatus.OK) {
-                data.nearbyRestrooms = [] // Clear previous restroom places
-                let detailsCounter = 0; // A counter to track the number of details fetched
-                results.forEach(place => {
-                    const service = new google.maps.places.PlacesService(document.createElement('div'));
-                    service.getDetails({
-                        placeId: place.place_id
-                    }, (placeResult, placeStatus) => {
-                        if (placeStatus === google.maps.places.PlacesServiceStatus.OK) {
+                data.nearbyRestrooms = []; // Clear previous restroom places
 
-                            const latToCheck = placeResult.geometry.location.lat();
-                            const lngToCheck = placeResult.geometry.location.lng();
+                for (const place of results) {
+                    await new Promise((resolve, reject) => {
+                        const service = new google.maps.places.PlacesService(document.createElement('div'));
+                        service.getDetails({
+                            placeId: place.place_id
+                        }, async (placeResult, placeStatus) => {
+                            if (placeStatus === google.maps.places.PlacesServiceStatus.OK) {
+                                const restroom = {
+                                    address: placeResult.formatted_address,
+                                    lat: placeResult.geometry.location.lat(),
+                                    lng: placeResult.geometry.location.lng(),
+                                    name: placeResult.name,
+                                    distance: null,
+                                    duration: null,
+                                    rating: placeResult.rating ? placeResult.rating : null,
+                                    photoUrl: placeResult.photos ? placeResult.photos[0].getUrl() : null,
+                                    isFav: favorites.some(fav => fav.lat === placeResult.geometry.location.lat() && fav.lng === placeResult.geometry.location.lng())
+                                };
 
-                            const exists = favorites.some(favorites => favorites.lat === latToCheck && favorites.lng === lngToCheck);
+                                if (isCurrentLocationAvailable) {
+                                    const { distance, duration } = await calculateDistanceForRestroom({ lat: restroom.lat, lng: restroom.lng });
+                                    restroom.distance = distance;
+                                    restroom.duration = duration;
+                                }
 
-                            // Save the detailed information
-                            data.nearbyRestrooms.push({
-                                address: placeResult.formatted_address,
-                                lat: placeResult.geometry.location.lat(),
-                                lng: placeResult.geometry.location.lng(),
-                                name: placeResult.name,
-                                distance: 0,
-                                rating: placeResult.rating ? placeResult.rating : null,
-                                photoUrl: placeResult.photos ? placeResult.photos[0].getUrl() : null,
-                                isFav: exists
-                            });
-
-                            // When all details have been fetched, handle the data
-                            if (++detailsCounter === results.length) {
-                                handleNearbyRestrooms(data.nearbyRestrooms);
+                                data.nearbyRestrooms.push(restroom);
                             }
-                        }
+                            resolve();
+                        });
                     });
-                });
+                }
+                handleNearbyRestrooms(data.nearbyRestrooms);
             }
         }
 
@@ -236,11 +236,11 @@
 
                 let distance = document.createElement('p');
                 distance.classList.add('card-text', 'm-0');
-                distance.textContent = "Distance: "+ null;
+                distance.textContent = "Distance: "+ restroom.distance;
 
                 let duration = document.createElement('p');
                 duration.classList.add('card-text', 'm-0');
-                duration.textContent = "Duration: "+ null;
+                duration.textContent = "Duration: "+ restroom.duration;
 
                 textContentDiv.appendChild(title);
                 textContentDiv.appendChild(text);
@@ -252,26 +252,10 @@
 
                 cardBody.appendChild(textContentDiv);
 
-                if (isCurrentLocationAvailable) {
-                    calculateDistanceForRestroom(restroom, function(calculatedDistance, calculatedDuration) {
-                        if (calculatedDistance) {
-                            distance.textContent = "Distance: " + calculatedDistance;
-                            duration.textContent = "Duration: " + calculatedDuration;
-                            restroom.distance = calculatedDistance;
-                        } else {
-                            distance.textContent = "Distance: Not available";
-                            duration.textContent = "Duration: Not available";
-                            restroom.distance = 0;
-                        }
-                    });
-                }
-
                 // Create a container for the heart icon and the button
                 let actionContainer = document.createElement('div');
                 actionContainer.classList.add('d-flex', 'justify-content-between', 'align-items-center');
 
-                // let heartLink = document.createElement('a');
-                // console.log(favorites);
                 // Create the heart symbol element
                 if (isLoggedIn) {
                     let heartIcon = document.createElement('i');
@@ -326,10 +310,6 @@
             updatePaginationControls(restrooms.length);
         }
 
-        function handleRouteData(distance, duration) {
-            console.log("Distance: " + distance + ", Duration: " + duration);
-        }
-
         function updatePaginationControls(totalItems) {
             let totalPages = Math.ceil(totalItems / itemsPerPage);
             let paginationElement = document.getElementById('pagination');
@@ -377,29 +357,6 @@
             paginationElement.appendChild(flexContainer);
         }
 
-
-
-        function removeExistingMapContainers() {
-            let existingContainers = document.querySelectorAll('.map-container');
-            existingContainers.forEach(container => container.remove());
-        }
-
-
-        function createMapContainer(index) {
-            let mapContainer = document.createElement('div');
-            mapContainer.id = 'mapContainer-' + index;
-            mapContainer.style.display = 'block'; // Initially hidden
-            mapContainer.classList.add('map-container');
-            mapContainer.classList.add('mb-3');
-            mapContainer.style.height = '400px';
-            mapContainer.style.width = '400px';
-            return mapContainer;
-        }
-
-        function insertMapContainerAfter(element, newElement) {
-            element.parentNode.insertBefore(newElement, element.nextSibling);
-        }
-
         function getCurrentLocation() {
             if (navigator.geolocation) {
                 navigator.geolocation.getCurrentPosition(function(position) {
@@ -442,24 +399,52 @@
 
         function applyFilters() {
             let sortPreference = document.getElementById('sort').value;
-            let ratingPreference = document.getElementById('rating').value;
+            let ratingPreference = parseFloat(document.getElementById('rating').value);
 
-            console.log(data.nearbyRestrooms);
-            if(data.nearbyRestrooms.length != 0){
-                console.log(sortPreference);
-                // Sort restrooms array based on the preference
-                if (sortPreference === 'distance') {
-                    console.log(typeof data.nearbyRestrooms[0].distance);
-                    data.nearbyRestrooms.sort((a, b) => parseFloat(a.distance) - parseFloat(b.distance));
-                } else if (sortPreference === 'rating') {
-                    data.nearbyRestrooms.sort((a, b) => b.rating - a.rating);
-                }
-                console.log(data.nearbyRestrooms);
-                handleNearbyRestrooms(data.nearbyRestrooms);
+            // First, filter the restrooms based on the rating
+            let filteredRestrooms = data.nearbyRestrooms.filter(restroom => {
+                return isNaN(ratingPreference) || (restroom.rating && restroom.rating >= ratingPreference);
+            });
+
+            // Then, sort the filtered list based on the sort preference
+            if (sortPreference === 'distance') {
+                filteredRestrooms.sort((a, b) => {
+                    const parseDistance = (distance) => {
+                        if (distance === 0 || distance === "0" || distance === "0 mi") {
+                            return Number.MAX_VALUE;
+                        } else {
+                            return parseFloat(distance.replace(" mi", ""));
+                        }
+                    };
+                    const distanceA = parseDistance(a.distance);
+                    const distanceB = parseDistance(b.distance);
+                    return distanceA - distanceB;
+                });
+            } else if (sortPreference === 'rating') {
+                filteredRestrooms.sort((a, b) => {
+                    const ratingA = a.rating || 0;
+                    const ratingB = b.rating || 0;
+                    return ratingB - ratingA;
+                });
+            }
+
+            // Handle no results
+            if (filteredRestrooms.length === 0) {
+                displayNoResultsMessage();
+            } else {
+                handleNearbyRestrooms(filteredRestrooms);
             }
         }
 
-
+        function displayNoResultsMessage() {
+            let container = document.getElementById('restroomsList');
+            if (!container) {
+                container = document.createElement('div');
+                container.id = 'restroomsList';
+                document.body.appendChild(container);
+            }
+            container.innerHTML = '<p>No restrooms available with the selected criteria.</p>';
+        }
 
         document.getElementById('autocomplete').addEventListener('focus', function() {
             fetch('api/get-search-history/', {
@@ -528,7 +513,6 @@
             });
         });
 
-
         function updateFavorite(restroomData, isFavorite) {
             fetch('/fav/update-favorite/', {
                 method: 'POST',
@@ -546,7 +530,6 @@
             .then(data => console.log("Response from server:", data))
             .catch(error => console.error('Error:', error));
         }
-
 
         function getCookie(name) {
             let cookieValue = null;

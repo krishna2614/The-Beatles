@@ -1,82 +1,264 @@
 {% extends 'base.html' %}
 {% load static %}
 
-{% block active %}
-    {% with active='restrooms' %}{{ block.super }}{% endwith %}
-{% endblock %}
-
 {% block title %}
-    <title>The Beatles | Restrooms</title>
+    <title>The Beatles | Favorite Restrooms</title>
 {% endblock %}
 
 {% block content %}
     {% if restrooms %}
-        <div class="dropdown" style="text-align:end;">
-            <button class="btn btn-secondary mt-5 mb-5" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-                Filter <i class="bi bi-filter"></i>
-            </button>
-            <ul class="dropdown-menu">
-                <li><a class="dropdown-item" href="?sort=asc&sortby=distance">By Distance</a></li>
-                <li><a class="dropdown-item" href="?sort=asc&sortby=rating">By Rating</a></li>
-            </ul>
-        </div>
-        <div>
-            {% for restroom in restrooms %}
-                <div class="card m-2">
-                    <div class="row g-0">
-                        <div class="col-md-4">
-                            <img src="{{ restroom.image_url|default_if_none:'/static/images/restroomIcon.jpg' }}" class="img-fluid rounded-start" style="width: 100%;height: 200px;background-size: cover;background-position: center;background-repeat: no-repeat;"/>
-                        </div>
-                        <div class="col-md-8">
-                            <div class="card-body">
-                                <h5 class="card-title">{{ restroom.name }}</h5>
-                                <p class="card-text">
-                                    <a href="https://maps.google.com/?q={{ restroom.lat }},{{ restroom.lng }}" style="text-decoration:none;">{{ restroom.address }}</a>
-                                </p>
-                                <p class="card-text">
-                                    <small class="text-muted">Distance: {{ restroom.distance|floatformat:2 }} miles</small>
-                                </p>
-                                <p class="card-text">
-                                    <small class="text-muted">Rating: {{ restroom.rating }}</small>
-                                </p>
-                            </div>
+<div id="restroomsList" style="margin-top:10px;"></div>
+<script type="text/javascript">
+    var restrooms = "{{ restrooms|safe }}";
+</script>
+
+<script>
+    var favorites;
+    var currentPage = 1;
+    var itemsPerPage = 5;
+
+    document.addEventListener('DOMContentLoaded', function() {
+        // Fetch the user's favorite restrooms
+        fetch('/fav/get-user-favorites/', {
+            headers: {
+                'X-Requested-With': 'XMLHttpRequest',
+            }
+        })
+        .then(response => response.json())
+        .then(fav_data => {
+            favorites = fav_data.favorites;
+            handleNearbyRestrooms(favorites);
+            document.querySelectorAll('.restroom').forEach(restroomElement => {
+                const restroomId = restroomElement.getAttribute('data-id');
+                if (favorites.includes(restroomId)) {
+                    const heartIcon = restroomElement.querySelector('.heart-icon');
+                    if (heartIcon) {
+                        heartIcon.classList.replace('bi-heart', 'bi-heart-fill');
+                        heartIcon.style.color = 'red';
+                    }
+                }
+            });
+        })
+        .catch(error => console.error('Error:', error));
+    });
+
+    document.addEventListener('DOMContentLoaded', function() {
+        document.body.addEventListener('click', function(e) {
+            if (e.target && e.target.matches('.heart-icon')) {
+                const itemId = e.target.getAttribute('data-id');
+                const id = parseInt(itemId) + parseInt((currentPage - 1) * itemsPerPage);
+                const restroomData = favorites[id];
+
+                if (!e.target.classList.contains('bi-heart-fill')) {
+                    e.target.classList.replace('bi-heart', 'bi-heart-fill');
+                    e.target.style.color = 'red';
+                    updateFavorite(restroomData, true);
+                } else {
+                    e.target.classList.replace('bi-heart-fill', 'bi-heart');
+                    e.target.style.color = 'initial';
+                    updateFavorite(restroomData, false);
+                }
+            }
+        });
+    });
+    function updateFavorite(restroomData, isFavorite) {
+        fetch('/fav/update-favorite/', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRFToken': getCookie('csrftoken')
+            },
+            body: JSON.stringify({
+                restroom: restroomData,
+                favorite: isFavorite,
+                fromFav: true
+            })
+        })
+        .then(response => response.json())
+        .then(data => console.log("Response from server:", data))
+        .catch(error => console.error('Error:', error));
+    }
+    function getCookie(name) {
+        let cookieValue = null;
+        if (document.cookie && document.cookie !== '') {
+            const cookies = document.cookie.split(';');
+            for (let i = 0; i < cookies.length; i++) {
+                const cookie = cookies[i].trim();
+                if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                    cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                    break;
+                }
+            }
+        }
+        return cookieValue;
+    }
+    function handleNearbyRestrooms(restrooms) {
+        let startIndex = (currentPage - 1) * itemsPerPage;
+        let endIndex = Math.min(startIndex + itemsPerPage, restrooms.length);
+        let paginatedRestrooms = restrooms.slice(startIndex, endIndex);
+
+        // Find or create a container element to display the restrooms
+        let container = document.getElementById('restroomsList');
+        if (!container) {
+            container = document.createElement('div');
+            container.id = 'restroomsList';
+            document.body.appendChild(container);
+        }
+
+        // Clear the previous content
+        container.innerHTML = '';
+        // Loop through the restrooms array and create card items
+        paginatedRestrooms.forEach(function(restroom, index) {
+            // Create the card element with Bootstrap classes
+            let card = document.createElement('div');
+            card.classList.add('card', 'mb-3');
+
+            card.setAttribute('style', 'width: 75%;margin-left: auto;margin-right: auto;')
+
+            // Add restroom details to the card
+            let cardBody = document.createElement('div');
+            cardBody.classList.add('card-body', 'd-flex', 'justify-content-between');
+
+            let textContentDiv = document.createElement('div');
+
+            let title = document.createElement('h5');
+            title.classList.add('card-title');
+            title.setAttribute('style', "font-weight:bold;");
+            title.textContent = restroom.name;
+
+            let text = document.createElement('p');
+            text.classList.add('card-text', 'm-0');
+            text.textContent = restroom.address;
+
+            let rating = document.createElement('p');
+            rating.classList.add('card-text', 'm-0');
+            rating.textContent = "Rating: "+ restroom.rating;
+
+            let distance = document.createElement('p');
+            distance.classList.add('card-text', 'm-0');
+            distance.textContent = "Distance: "+ null;
+
+            let duration = document.createElement('p');
+            duration.classList.add('card-text', 'm-0');
+            duration.textContent = "Duration: "+ null;
+
+            textContentDiv.appendChild(title);
+            textContentDiv.appendChild(text);
+            textContentDiv.appendChild(rating);
+
+            cardBody.appendChild(textContentDiv);
+
+
+            // Create a container for the heart icon and the button
+            let actionContainer = document.createElement('div');
+            actionContainer.classList.add('d-flex', 'justify-content-between', 'align-items-center');
+
+            // Create the heart symbol element
+            let heartIcon = document.createElement('i');
+            if(!restroom.isFav) {
+                heartIcon.classList.add('bi', 'bi-heart-fill', 'heart-icon');
+                heartIcon.style.color = 'red';
+            } else {
+                heartIcon.classList.add('bi', 'bi-heart', 'heart-icon');
+            }
+            heartIcon.style.cursor = 'pointer'; // Change cursor on hover
+            heartIcon.style.fontSize = '1.5rem'
+            heartIcon.style.marginRight = '10px';
+            heartIcon.setAttribute('data-id', index);
+
+            actionContainer.appendChild(heartIcon);
+
+
+            // Create the button element
+            let button = document.createElement('a');
+            button.classList.add('btn', 'btn-primary', 'get-directions-btn', 'responsive-button');
+            button.textContent = 'Get Location';
+            button.style.height = '40px';
+
+            let div = document.createElement('div');
+            div.classList.add('row');
+            div.setAttribute('style', "margin-top:auto;margin-bottom:auto;");
+
+            // let button = document.createElement('a');
+            // button.classList.add('btn', 'btn-primary', 'get-directions-btn', 'responsive-button');
+
+            button.setAttribute('style', "margin-top:auto;margin-bottom:auto;");
+
+            button.addEventListener('click', function(e) {
+                e.preventDefault();
+                let destination = restroom.lat + ',' + restroom.lng;
+                let googleMapsUrl = `https://www.google.com/maps?q=${destination}`;
+                window.open(googleMapsUrl, '_blank');
+            });
+            actionContainer.appendChild(button);
+            cardBody.appendChild(actionContainer);
+
+            // Append the flex container to the card body instead of individual elements
+            card.appendChild(cardBody);
+            container.appendChild(card);
+        });
+        updatePaginationControls(restrooms.length);
+    }
+    function updatePaginationControls(totalItems) {
+        let totalPages = Math.ceil(totalItems / itemsPerPage);
+        let paginationElement = document.getElementById('pagination');
+        if (!paginationElement) {
+            // Create pagination element if it does not exist
+            paginationElement = document.createElement('nav');
+            paginationElement.id = 'pagination';
+            document.body.appendChild(paginationElement);
+        }
+        paginationElement.innerHTML = ''; // Clear existing controls
+
+        // Create a flex container div for centering
+        let flexContainer = document.createElement('div');
+        flexContainer.classList.add('d-flex', 'justify-content-center');
+
+        // Create the UL element for pagination
+        let ul = document.createElement('ul');
+        ul.classList.add('pagination');
+
+        for (let i = 1; i <= totalPages; i++) {
+            let li = document.createElement('li');
+            li.classList.add('page-item');
+            if (currentPage === i) {
+                li.classList.add('active'); // Highlight the current page
+            }
+
+            let a = document.createElement('a');
+            a.classList.add('page-link');
+            a.href = '#';
+            a.textContent = i;
+            a.addEventListener('click', function(e) {
+                e.preventDefault();
+                currentPage = i;
+                handleNearbyRestrooms(favorites);
+            });
+
+            li.appendChild(a);
+            ul.appendChild(li);
+        }
+
+        // Append the UL element to the flex container
+        flexContainer.appendChild(ul);
+
+        // Append the flex container to the pagination element
+        paginationElement.appendChild(flexContainer);
+    }
+</script>
+    {% else %}
+        <div class="container">
+            <div class="row">
+                <!-- Blog Entries Column -->
+                <div class="col-md-8 mt-3 left">
+                    <div class="card mb-4">
+                        <div class="card-body">
+                            <h2 class="card-title">No Favorites</h2>
                         </div>
                     </div>
                 </div>
-            {% endfor %}
+            </div>
         </div>
-        <nav aria-label="Page navigation example">
-            <ul class="pagination justify-content-center">
-                {% if page_obj.has_previous %}
-                <li class="page-item">
-                    <a class="page-link" onclick="do_sub(1);">First</a>
-                </li>
-                <li class="page-item">
-                    <a class="page-link" onclick="do_sub({{ page_obj.previous_page_number }});" tabindex="-1">Previous</a>
-                </li>
-                {% endif %}
-                <li class="page-item"><a class="page-link" onclick="do_sub({{ page_obj.number }});">{{ page_obj.number }}</a></li>
-                {% if page_obj.has_next %}
-                <li class="page-item">
-                    <a class="page-link" onclick="do_sub({{ page_obj.next_page_number }});">Next</a>
-                </li>
-                <li class="page-item">
-                    <a class="page-link" onclick="do_sub({{ page_obj.paginator.num_pages }});">Last</a>
-                </li>
-                {% endif %}
-            </ul>
-        </nav>
-        <script>
-            function do_sub(pageNumber) {
-                const currentUrl2 = window.location.href;
-                const currentUrl = new URL(currentUrl2);
-                const queryString = new URLSearchParams(window.location.search);
-                queryString.set('page', pageNumber);
-                const link = new URL(`${currentUrl.origin}${currentUrl.pathname}?${queryString}`);
-                window.location = link;
-            }
-        </script>
-    {% else %}
-        <center><p style="font-size:30px;margin-top:50px;">Location not Found</p></center>
     {% endif %}
+
 {% endblock content %}

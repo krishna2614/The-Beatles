@@ -19,8 +19,9 @@
               <img src="{% static 'images/person.png' %}" alt="mdo" width="32" height="32" class="rounded-circle"> Welcome, {{ user.firstName }}
             </a>
             <ul class="dropdown-menu text-small" aria-labelledby="dropdownUser1">
-              <li><a class="dropdown-item" href="{% url 'accounts_forgot' %}">Forgot Password</a></li>
               <li><a class="dropdown-item" href="{% url 'accounts_profile' %}">Profile</a></li>
+              <li><a class="dropdown-item" href="{% url 'fav_page' %}">Favorites</a></li>
+              <li><a class="dropdown-item" href="{% url 'accounts_forgot' %}">Forgot Password</a></li>
               <li><hr class="dropdown-divider"></li>
               <li><a class="dropdown-item" href="{% url 'accounts_logout' %}">Sign out</a></li>
             </ul>
