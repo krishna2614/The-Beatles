@@ -11,16 +11,18 @@
 {% endblock %}
 
 {% block content %}
-    <div class="search-container d-flex align-items-center justify-content-center p-3 bg-light rounded-3 shadow-sm mx-auto my-3" style="border-radius:2.3rem !important;border: 0.5px solid #ced4da;">
-        <input type="text" class="form-control me-2" placeholder="Find Nearest Restrooms" id="autocomplete" list="history-list">
-        <datalist id="history-list">
-          <!-- Search history options will be populated here -->
-        </datalist>
-        <button class="btn" style="background-color:#2c3e50;color:White;border-radius:20px;" data-bs-toggle="modal" data-bs-target="#filterModal">Filter</button>
-    </div>
+<div class="search-container d-flex align-items-center justify-content-center p-3 bg-light rounded-3 shadow-sm mx-auto my-3" style="border-radius:2.3rem !important;border: 0.5px solid #ced4da;">
+    <!-- Add a label for the input field -->
+    <label for="autocomplete" class="visually-hidden">Search for Nearest Restrooms</label>
+    <input type="text" class="form-control me-2 pac-target-input" placeholder="Find Nearest Restrooms" id="autocomplete" list="history-list" autocomplete="off">
+    <datalist id="history-list">
+      <!-- Search history options will be populated here -->
+    </datalist>
+    <button class="btn" style="background-color:#2c3e50;color:White;border-radius:20px;" data-bs-toggle="modal" data-bs-target="#filterModal">Filter</button>
+</div>
 
-    <!-- Filter Modal -->
-    <div class="modal fade" id="filterModal" tabindex="-1" aria-labelledby="filterModalLabel" aria-hidden="true">
+<!-- Filter Modal -->
+<div class="modal fade" id="filterModal" tabindex="-1" aria-labelledby="filterModalLabel" aria-hidden="true">
       <div class="modal-dialog">
         <div class="modal-content">
           <div class="modal-header">
